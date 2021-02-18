@@ -32,7 +32,7 @@ function UserCenter() {
   const [address, setAddress] = useState('')
 
   // 一開始的地址陣列函式
-  function setAddCTArr() {
+  const setAddCTArr = () => {
     // 城市陣列 For初始下拉選單
     let arrCity = []
     for (let i in CityData) {

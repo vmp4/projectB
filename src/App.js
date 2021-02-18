@@ -49,7 +49,8 @@ function App() {
             </Route>
             {isAuth ? (
               <ProtectedRoute path="/usercenter">
-                <UserCenter />
+                {/* 使用ProtectedRoute，一定要有傳入的props！ */}
+                <UserCenter isAuth={isAuth} />
               </ProtectedRoute>
             ) : (
               <Route path="/register">
