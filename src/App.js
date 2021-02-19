@@ -31,9 +31,12 @@ function App() {
             setIsAuth(false)
           }}
         />
-        <Breadcrumb />
+        <div
+          className="container"
+          style={{ marginTop: '55px', marginBottom: '60px' }}
+        >
+          <Breadcrumb />
 
-        <div className="container">
           <Switch>
             <Route exact path="/">
               <Home />
