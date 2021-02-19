@@ -177,10 +177,10 @@ function UserCenter() {
               aria-describedby="inputGroupName"
               maxLength="32"
             />
+            <Form.Control.Feedback type="invalid">
+              　　　　沒有輸入姓名！
+            </Form.Control.Feedback>
           </InputGroup>
-          <Form.Control.Feedback type="invalid">
-            沒有輸入姓名！
-          </Form.Control.Feedback>
         </Form.Group>
 
         {/* 第３欄－性別 */}
@@ -268,11 +268,11 @@ function UserCenter() {
             />
             {!tel ? (
               <Form.Control.Feedback type="invalid">
-                沒有輸入號碼！
+                　　　　沒有輸入號碼！
               </Form.Control.Feedback>
             ) : (
               <Form.Control.Feedback type="invalid">
-                號碼格式輸入錯誤！
+                　　　　號碼格式輸入錯誤！
               </Form.Control.Feedback>
             )}
           </InputGroup>
@@ -303,11 +303,11 @@ function UserCenter() {
             />
             {!mail ? (
               <Form.Control.Feedback type="invalid">
-                請輸入信箱！
+                　　　　請輸入信箱！
               </Form.Control.Feedback>
             ) : (
               <Form.Control.Feedback type="invalid">
-                您輸入的信箱格式錯誤！
+                　　　　您輸入的信箱格式錯誤！
               </Form.Control.Feedback>
             )}
           </InputGroup>
@@ -429,7 +429,7 @@ function UserCenter() {
               aria-describedby="inputGroupAdd"
             />
             <Form.Control.Feedback type="invalid">
-              沒有輸入地址！
+              　　　　沒有輸入地址！
             </Form.Control.Feedback>
           </InputGroup>
           <Form.Text id="inputGroupAdd" style={{ color: 'blue' }}>
@@ -438,14 +438,14 @@ function UserCenter() {
         </Form.Group>
       </Form.Row>
 
-      <Form.Group>
+      {/* <Form.Group>
         <Form.Check
           required
           label="Agree to terms and conditions"
           feedback="You must agree before submitting."
         />
-      </Form.Group>
-      <Button type="submit">Submit form</Button>
+      </Form.Group> */}
+      <Button type="submit">確認更改</Button>
     </Form>
   )
 
