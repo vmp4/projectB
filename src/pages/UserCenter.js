@@ -26,12 +26,13 @@ function UserCenter() {
   const [tel, setTel] = useState('')
   const [city, setCity] = useState('')
   const [cityOption, setCityOption] = useState([])
+  const [cityTown, setCityTown] = useState({})
   const [town, setTown] = useState('')
   const [townOption, setTownOption] = useState([])
   const [zip, setZip] = useState('')
   const [address, setAddress] = useState('')
 
-  // 一開始的地址陣列函式
+  // 一開始的地址函式
   const setAddCTArr = () => {
     // 城市陣列 For初始下拉選單
     let arrCity = []
@@ -39,14 +40,21 @@ function UserCenter() {
       arrCity.push(i)
     }
     setCityOption(arrCity)
-    setCity(arrCity[0])
+    let firstCity = arrCity[0]
+    // setCity(firstCity)
 
     // 鄉鎮陣列 For初始下拉選單
     let arrTown = []
-    for (let i in CityTownData[arrCity[0]]) {
+    for (let i in CityTownData[firstCity]) {
       arrTown.push(i)
     }
     setTownOption(arrTown)
+    // let firstTown = arrTown[0]
+    // setTown(firstTown)
+
+    // For初始郵遞區號
+    // let firstZip = CityTownData[firstCity][firstTown]
+    // setZip(firstZip)
   }
 
   // 讀取資料函式
@@ -61,7 +69,7 @@ function UserCenter() {
 
     const response = await fetch(request)
     const data = await response.json()
-    // console.log(data)
+
     setName(data.name)
     setUsername(data.username)
     setSex(data.sex)
@@ -98,26 +106,24 @@ function UserCenter() {
 
   useEffect(() => {
     // 當城市改變時改變鄉鎮陣列
-    let arrTown = []
-    for (let i in CityTownData[city]) {
-      arrTown.push(i)
+    if (city !== '') {
+      let arrTown = []
+      for (let i in CityTownData[city]) {
+        arrTown.push(i)
+      }
+      setTownOption(arrTown)
+      setCityTown(CityTownData[city])
+      setTown(arrTown[0])
     }
-    setTownOption(arrTown)
-    setTown(arrTown[0])
   }, [city])
 
   // 當鄉鎮改變時改變郵遞區號
-  // useEffect(() => {
-  //   let arrZip = CityTownData[city][town]
-  //   console.log(arrZip)
-  //   setZip(arrZip)
-  // }, [town])
-
-  console.log('這是城市: ', city)
-  console.log('這是鄉鎮: ', town)
-  console.log('這是區號: ', zip)
-  console.log(cityOption)
-  console.log(townOption)
+  useEffect(() => {
+    if (cityTown !== {} && town !== '') {
+      let arrZip = cityTown[town]
+      setZip(arrZip)
+    }
+  }, [cityTown, town])
 
   const spinner = (
     <div className="d-flex justify-content-center">
