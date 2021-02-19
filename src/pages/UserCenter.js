@@ -104,8 +104,8 @@ function UserCenter() {
     }, 500)
   }, [])
 
+  // 當城市改變時改變鄉鎮陣列
   useEffect(() => {
-    // 當城市改變時改變鄉鎮陣列
     if (city !== '') {
       let arrTown = []
       for (let i in CityTownData[city]) {
