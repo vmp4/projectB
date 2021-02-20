@@ -30,7 +30,7 @@ function UserCenter() {
   const [town, setTown] = useState('')
   const [townOption, setTownOption] = useState([])
   const [zip, setZip] = useState('')
-  const [address, setAddress] = useState('')
+  const [add, setadd] = useState('')
 
   // 一開始的地址函式
   const setAddCTArr = () => {
@@ -79,7 +79,44 @@ function UserCenter() {
     setCity(data.city)
     setTown(data.town)
     setZip(data.zip)
-    setAddress(data.add)
+    setadd(data.add)
+  }
+
+  // 送出資料函式
+  async function updataToServer() {
+    setLoading(true)
+
+    const newData = {
+      name,
+      username,
+      sex,
+      birthday,
+      mail,
+      tel,
+      city,
+      town,
+      zip,
+      add,
+    }
+
+    const request = new Request('http://localhost:5555/user/1', {
+      method: 'PUT',
+      body: JSON.stringify(newData),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+
+    const response = await fetch(request)
+    const data = await response.json()
+
+    setTimeout(() => {
+      setLoading(false)
+      alert('儲存完成')
+      getDataFromServer()
+      setValidated(false)
+    })
   }
 
   const handleSubmit = (event) => {
@@ -90,6 +127,8 @@ function UserCenter() {
     }
 
     setValidated(true)
+
+    updataToServer()
   }
 
   // 一開始讀取資料
@@ -417,11 +456,11 @@ function UserCenter() {
             <Form.Control
               required
               type="text"
-              defaultValue={address}
+              value={add}
               onChange={
                 // 地址輸入時及時改變
                 (event) => {
-                  setAddress(event.target.value)
+                  setadd(event.target.value)
                 }
               }
               placeholder="請輸入地址"
