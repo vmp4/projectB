@@ -21,7 +21,9 @@ import Menu from './components/Menu'
 import Footer from './components/Footer'
 
 function App() {
-  let [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
+  const [isAuthMain, setIsAuthMain] = useState(false)
+
   return (
     <Router>
       <>
@@ -29,6 +31,10 @@ function App() {
           isAuth={isAuth}
           logout={() => {
             setIsAuth(false)
+          }}
+          isAuthMain={isAuthMain}
+          logoutMain={() => {
+            setIsAuthMain(false)
           }}
         />
         <div
