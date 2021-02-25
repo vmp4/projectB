@@ -16,6 +16,7 @@ import CityTownData from '../data/CityTownData'
 
 function UserCenter() {
   const [loading, setLoading] = useState(true)
+  // 顯示打勾或是錯誤
   const [validated, setValidated] = useState(false)
 
   const [userInfo, setUserInfo] = useState({
