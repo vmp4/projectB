@@ -136,15 +136,14 @@ function UserCenter() {
   // 確認資料及送出
   const handleSubmit = (event) => {
     const form = event.currentTarget
-    console.log(window.event.stopPropagation())
     if (form.checkValidity() === false) {
-      window.event.preventDefault()
-      window.event.stopPropagation()
+      event.preventDefault()
+      event.stopPropagation()
+    } else {
+      updataToServer()
     }
 
     setValidated(true)
-
-    updataToServer()
   }
 
   // 一開始讀取資料 當讀取資料時設置時停
