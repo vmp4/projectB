@@ -21,6 +21,7 @@ function UserCenter() {
   const [userInfo, setUserInfo] = useState({
     name: '',
     username: '',
+    password: '',
     sex: '',
     birthday: '',
     mail: '',
@@ -75,6 +76,7 @@ function UserCenter() {
     setUserInfo({
       name: data.name,
       username: data.username,
+      password: data.password,
       sex: data.sex,
       birthday: data.birthday,
       mail: data.mail,
@@ -108,6 +110,7 @@ function UserCenter() {
       setUserInfo({
         name: data.name,
         username: data.username,
+        password: data.password,
         sex: data.sex,
         birthday: data.birthday,
         mail: data.mail,
@@ -133,9 +136,10 @@ function UserCenter() {
   // 確認資料及送出
   const handleSubmit = (event) => {
     const form = event.currentTarget
+    console.log(window.event.stopPropagation())
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      window.event.preventDefault()
+      window.event.stopPropagation()
     }
 
     setValidated(true)
