@@ -34,7 +34,6 @@ function Login(props) {
         (loginCount === value.username && loginPass === value.password) ||
         (loginCount === value.mail && loginPass === value.password)
       ) {
-        setValidated(false)
         props.history.push('/')
         props.login()
 
