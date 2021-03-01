@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Route,
@@ -23,6 +23,18 @@ import Footer from './components/Footer'
 function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
+  const [loger, setLoger] = useState(localStorage.getItem('logoUser'))
+  const [logID, setLogID] = useState('')
+  const [logName, setLogName] = useState('')
+
+  useEffect(() => {
+    const data = JSON.parse(loger)
+    if (loger !== '' && loger !== null) {
+      setIsAuth(true)
+      setLogID(data[0].id)
+      setLogName(data[0].name.slice(0, 1))
+    }
+  }, [loger])
 
   return (
     <Router>
@@ -30,8 +42,10 @@ function App() {
         <Menu
           isAuth={isAuth}
           logout={() => {
+            localStorage.removeItem('logoUser')
             setIsAuth(false)
           }}
+          lastname={logName}
           isAuthMain={isAuthMain}
           logoutMain={() => {
             setIsAuthMain(false)
@@ -59,7 +73,7 @@ function App() {
             {isAuth ? (
               <ProtectedRoute path="/usercenter">
                 {/* 使用ProtectedRoute，一定要有傳入的props！ */}
-                <UserCenter isAuth={isAuth} />
+                <UserCenter isAuth={isAuth} id={logID} />
               </ProtectedRoute>
             ) : (
               <Route path="/register">
