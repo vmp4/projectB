@@ -8,7 +8,7 @@ function Login(props) {
   const [validated, setValidated] = useState(false)
 
   const [userData, setUserData] = useState([])
-  const [loginCount, setLoginCount] = useState('')
+  const [loginAccount, setLoginAccount] = useState('')
   const [loginPass, setLoginPass] = useState('')
 
   // 讀取資料
@@ -31,8 +31,8 @@ function Login(props) {
   const checkLogin = () => {
     const getUser = userData.find((value) => {
       if (
-        (loginCount === value.username && loginPass === value.password) ||
-        (loginCount === value.mail && loginPass === value.password)
+        (loginAccount === value.username && loginPass === value.password) ||
+        (loginAccount === value.mail && loginPass === value.password)
       ) {
         props.history.push('/')
         props.login()
@@ -91,14 +91,14 @@ function Login(props) {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1>登入</h1>
       <Form.Row>
-        <Form.Group as={Col} md="6" controlId="count">
+        <Form.Group as={Col} md="6" controlId="Account">
           <Form.Label>帳號</Form.Label>
           <Form.Control
             required
             type="text"
             placeholder="請輸入帳號或信箱"
             onChange={(event) => {
-              setLoginCount(event.target.value)
+              setLoginAccount(event.target.value)
             }}
           />
           <Form.Control.Feedback type="invalid">
