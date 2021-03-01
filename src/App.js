@@ -91,7 +91,7 @@ function App() {
               </Route>
             ) : (
               <Route>
-                <Redirect to="/usercenter" />
+                <Redirect to="/" />
               </Route>
             )}
             <ProtectedRoute to="/userlist">
