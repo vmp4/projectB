@@ -73,9 +73,6 @@ function App() {
                   login={() => {
                     setIsAuth(true)
                   }}
-                  logout={() => {
-                    setIsAuth(false)
-                  }}
                 />
               </Route>
             ) : (
