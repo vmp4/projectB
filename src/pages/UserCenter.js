@@ -14,7 +14,8 @@ import { GoMail } from 'react-icons/go'
 import CityData from '../data/CityData'
 import CityTownData from '../data/CityTownData'
 
-function UserCenter() {
+function UserCenter(props) {
+  const id = props.id
   const [loading, setLoading] = useState(true)
   // 顯示打勾或是錯誤
   const [validated, setValidated] = useState(false)
@@ -63,7 +64,7 @@ function UserCenter() {
 
   // 讀取資料函式
   async function getDataFromServer() {
-    const request = new Request('http://localhost:5555/user/1', {
+    const request = new Request('http://localhost:5555/user/' + id, {
       method: 'GET',
       headers: new Headers({
         Accept: 'application/json',
@@ -93,7 +94,7 @@ function UserCenter() {
   async function updataToServer() {
     setLoading(true)
 
-    const request = new Request('http://localhost:5555/user/1', {
+    const request = new Request('http://localhost:5555/user/' + id, {
       method: 'PUT',
       body: JSON.stringify(userInfo),
       headers: new Headers({
