@@ -23,18 +23,27 @@ import Footer from './components/Footer'
 function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
-  const [loger, setLoger] = useState(localStorage.getItem('logoUser'))
+  const [loger, setLoger] = useState(localStorage.getItem('logoUser') || '')
   const [logID, setLogID] = useState('')
   const [logName, setLogName] = useState('')
 
   useEffect(() => {
-    const data = JSON.parse(loger)
+    if (localStorage.getItem('logoUser') !== null) {
+      const newLoger = localStorage.getItem('logoUser')
+      setLoger(newLoger)
+    }
+  }, [])
+
+  useEffect(() => {
     if (loger !== '' && loger !== null) {
+      const data = JSON.parse(loger)
       setIsAuth(true)
       setLogID(data[0].id)
       setLogName(data[0].name.slice(0, 1))
     }
   }, [loger])
+  console.log(loger)
+  console.log(logID)
 
   return (
     <Router>

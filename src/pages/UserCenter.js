@@ -177,7 +177,7 @@ function UserCenter(props) {
 
   // 當鄉鎮改變時改變郵遞區號
   useEffect(() => {
-    if (cityTown !== {} && userInfo.town !== '') {
+    if (cityTown !== undefined && userInfo.town !== '') {
       let arrZip = cityTown[userInfo.town]
       setUserInfo((userInfo) => ({
         ...userInfo,

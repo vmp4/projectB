@@ -10,6 +10,7 @@ function Login(props) {
   const [userData, setUserData] = useState([])
   const [loginAccount, setLoginAccount] = useState('')
   const [loginPass, setLoginPass] = useState('')
+  const [rememberAccount, setRememberAccount] = useState(false)
 
   // 讀取資料
   async function loginMember() {
@@ -34,14 +35,14 @@ function Login(props) {
         (loginAccount === value.username && loginPass === value.password) ||
         (loginAccount === value.mail && loginPass === value.password)
       ) {
-        props.history.push('/')
-        props.login()
-
         let setUser = [{ name: value.name, id: value.id }]
         if (setUser !== undefined) {
           localStorage.setItem('logoUser', JSON.stringify(setUser))
         }
-        return true
+
+        props.login()
+
+        return props.history.go('/')
       } else {
         return false
       }
@@ -49,13 +50,27 @@ function Login(props) {
     if (!getUser) {
       setLoading(true)
 
-      props.history.push('/login')
+      props.history.go('/login')
 
       setTimeout(() => {
         alert('帳號或密碼輸入錯誤！')
         setLoading(false)
         setValidated(false)
       })
+    }
+  }
+
+  // 進入頁面後確認是否有資料在localstorage 有則讀取
+  const checkSave = () => {
+    const localData = JSON.parse(localStorage.getItem('saveAccount'))
+    if (localData === null) {
+      // setRememberAccount(false)
+      // setLoginAccount('')
+      return false
+    }
+    if (localData.check && localData.username !== '') {
+      setRememberAccount(localData.check)
+      setLoginAccount(localData.username)
     }
   }
 
@@ -68,11 +83,22 @@ function Login(props) {
     } else {
       checkLogin()
     }
+    // 送出時如有勾選記住帳號 則存入localstorage 否則清除掉
+    if (rememberAccount && loginAccount !== '') {
+      localStorage.setItem(
+        'saveAccount',
+        JSON.stringify({ username: loginAccount, check: rememberAccount })
+      )
+    } else {
+      localStorage.removeItem('saveAccount')
+    }
 
     setValidated(true)
   }
 
   useEffect(() => {
+    checkSave()
+
     loginMember()
 
     setTimeout(() => {
@@ -96,6 +122,7 @@ function Login(props) {
           <Form.Control
             required
             type="text"
+            value={loginAccount}
             placeholder="請輸入帳號或信箱"
             onChange={(event) => {
               setLoginAccount(event.target.value)
@@ -124,13 +151,17 @@ function Login(props) {
         </Form.Group>
       </Form.Row>
 
-      {/* <Form.Group>
-      <Form.Check
-        required
-        label="Agree to terms and conditions"
-        feedback="You must agree before submitting."
-      />
-    </Form.Group> */}
+      <Form.Group controlId="saveAccountCheckbox">
+        <Form.Check
+          type="checkbox"
+          label="記住帳號"
+          onChange={(e) => {
+            setRememberAccount(e.target.checked)
+          }}
+          checked={rememberAccount}
+        />
+      </Form.Group>
+
       <Form.Row>
         <Button type="submit">登入</Button>
         {props.isAuth ? (
