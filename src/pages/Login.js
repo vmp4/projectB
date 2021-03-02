@@ -41,8 +41,9 @@ function Login(props) {
         }
 
         props.login()
+        props.history.go('/')
 
-        return props.history.go('/')
+        return true
       } else {
         return false
       }
@@ -77,12 +78,6 @@ function Login(props) {
   // 確認資料及送出
   const handleSubmit = (event) => {
     const form = event.currentTarget
-    if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    } else {
-      checkLogin()
-    }
     // 送出時如有勾選記住帳號 則存入localstorage 否則清除掉
     if (rememberAccount && loginAccount !== '') {
       localStorage.setItem(
@@ -93,13 +88,19 @@ function Login(props) {
       localStorage.removeItem('saveAccount')
     }
 
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    } else {
+      checkLogin()
+    }
     setValidated(true)
   }
 
   useEffect(() => {
-    checkSave()
-
     loginMember()
+
+    checkSave()
 
     setTimeout(() => {
       setLoading(false)

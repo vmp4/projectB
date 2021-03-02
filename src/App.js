@@ -23,7 +23,7 @@ import Footer from './components/Footer'
 function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
-  const [loger, setLoger] = useState(localStorage.getItem('logoUser') || '')
+  const [loger, setLoger] = useState('')
   const [logID, setLogID] = useState('')
   const [logName, setLogName] = useState('')
 
@@ -44,6 +44,7 @@ function App() {
   }, [loger])
   console.log(loger)
   console.log(logID)
+  console.log(logName)
 
   return (
     <Router>
