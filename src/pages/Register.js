@@ -25,8 +25,8 @@ function Register(props) {
     birthday: '',
     mail: '',
     tel: '',
-    city: '',
-    town: '',
+    city: '請選擇',
+    town: '請選擇',
     zip: '',
     add: '',
   })
@@ -42,29 +42,6 @@ function Register(props) {
       arrCity.push(i)
     }
     setCityOption(arrCity)
-    // let firstCity = arrCity[0]
-    // setCity(firstCity)
-
-    // 鄉鎮陣列 For初始下拉選單
-    let arrTown = []
-    for (let i = 0; i < arrCity.length; i++) {
-      for (let j in CityTownData[arrCity[i]]) {
-        arrTown.push(j)
-      }
-    }
-    setTownOption(arrTown)
-    // let firstTown = arrTown[0]
-    // setUserInfo((prevInfo) => ({
-    //   ...prevInfo,
-    //   town: firstTown,
-    // }))
-
-    // // For初始郵遞區號
-    // let firstZip = CityTownData[firstCity][firstTown]
-    // setUserInfo((prevInfo) => ({
-    //   ...prevInfo,
-    //   zip: firstZip,
-    // }))
   }
 
   async function upNewDataToServer() {}
@@ -98,7 +75,7 @@ function Register(props) {
 
   // 當城市改變時改變鄉鎮陣列
   useEffect(() => {
-    if (userInfo.city !== '') {
+    if (userInfo.city !== '請選擇') {
       let arrTown = []
       for (let i in CityTownData[userInfo.city]) {
         arrTown.push(i)
@@ -107,21 +84,20 @@ function Register(props) {
       setCityTown(CityTownData[userInfo.city])
       setUserInfo((userInfo) => ({
         ...userInfo,
-        town: arrTown[0],
+        town: '請選擇',
+        zip: '',
       }))
     }
   }, [userInfo.city])
 
   // 當鄉鎮改變時改變郵遞區號
   useEffect(() => {
-    if (cityTown !== undefined && userInfo.town !== '') {
+    if (cityTown !== undefined && userInfo.town !== '請選擇') {
       let arrZip = cityTown[userInfo.town]
       setUserInfo((userInfo) => ({
         ...userInfo,
         zip: arrZip,
       }))
-    }
-    if (userInfo.town !== '') {
     }
   }, [cityTown, userInfo.town])
 
@@ -189,6 +165,7 @@ function Register(props) {
                 custom
                 required
                 as="select"
+                title="請選擇性別"
                 onChange={handleChange}
                 defaultValue="請選擇"
                 aria-describedby="inputGroupSex"
@@ -215,8 +192,8 @@ function Register(props) {
               <Form.Control
                 required
                 type="date"
+                title="請輸入生日"
                 onChange={handleChange}
-                placeholder="請輸入生日"
                 aria-describedby="inputGroupBirthday"
               />
               {/* <Form.Control.Feedback type="invalid">
@@ -237,6 +214,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="tel"
+                title="請輸入正確號碼以便聯絡"
                 onChange={handleChange}
                 placeholder="請輸入手機號碼"
                 aria-describedby="inputGroupTel"
@@ -266,6 +244,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="email"
+                title="請輸入正確信箱以便驗證"
                 onChange={handleChange}
                 maxLength="256"
                 aria-describedby="inputGroupMail"
@@ -300,9 +279,11 @@ function Register(props) {
                 custom
                 required
                 as="select"
-                defaultValue="請選擇"
+                value={userInfo.city}
+                title="請選擇縣市"
                 onChange={handleChange}
                 aria-describedby="inputGroupCity"
+                pattern="[^請選擇]"
               >
                 <option disabled>請選擇</option>
                 {cityOption.map((obj, index) => {
@@ -325,7 +306,8 @@ function Register(props) {
                 custom
                 required
                 as="select"
-                defaultValue="請選擇"
+                value={userInfo.town}
+                title="請選擇鄉鎮"
                 onChange={handleChange}
                 aria-describedby="inputGroupTown"
               >
@@ -344,6 +326,7 @@ function Register(props) {
               required
               type="text"
               value={userInfo.zip}
+              title="請確認"
               onChange={handleChange}
               placeholder="請輸入"
               pattern="\d{3}"
@@ -371,6 +354,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="text"
+                title="請輸入方便收件地址"
                 onChange={handleChange}
                 placeholder="請輸入地址"
                 maxLength="128"
