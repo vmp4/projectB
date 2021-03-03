@@ -92,14 +92,30 @@ function Menu(props) {
                 </NavLink>
               </li>
             )}
-            <li className="nav-item">
-              <NavLink
-                to="/userlist"
-                className="nav-link"
-                activeClassName="active"
-              >
-                會員列表
-              </NavLink>
+            {props.isAuthMain ? (
+              <li className="nav-item">
+                <NavLink
+                  to="/userlist"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  會員列表
+                </NavLink>
+              </li>
+            ) : (
+              ''
+            )}
+            <li
+              className="nav-item"
+              style={{ marginTop: 'auto', marginBottom: 'auto' }}
+            >
+              歡迎！
+              {props.isAuth
+                ? props.lastName
+                : props.isAuthMain
+                ? '主管'
+                : '訪客'}
+              {props.isAuth ? '先生' : ''}
             </li>
           </ul>
           <Form inline className="form-inline my-2 my-lg-0">

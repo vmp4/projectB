@@ -40,8 +40,11 @@ function Login(props) {
           localStorage.setItem('logoUser', JSON.stringify(setUser))
         }
 
-        props.login()
-        props.history.go('/')
+        setTimeout(() => {
+          alert('登入成功！')
+          props.login()
+          props.history.push('/')
+        }, 500)
 
         return true
       } else {
@@ -51,7 +54,7 @@ function Login(props) {
     if (!getUser) {
       setLoading(true)
 
-      props.history.go('/login')
+      props.history.push('/login')
 
       setTimeout(() => {
         alert('帳號或密碼輸入錯誤！')

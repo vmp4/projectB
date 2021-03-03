@@ -42,9 +42,6 @@ function App() {
       setLogName(data[0].name.slice(0, 1))
     }
   }, [loger])
-  console.log(loger)
-  console.log(logID)
-  console.log(logName)
 
   return (
     <Router>
@@ -55,7 +52,7 @@ function App() {
             localStorage.removeItem('logoUser')
             setIsAuth(false)
           }}
-          lastname={logName}
+          lastName={logName}
           isAuthMain={isAuthMain}
           logoutMain={() => {
             setIsAuthMain(false)
@@ -104,9 +101,13 @@ function App() {
                 <Redirect to="/" />
               </Route>
             )}
-            <ProtectedRoute to="/userlist">
-              <UserList isAuth={isAuth} />
-            </ProtectedRoute>
+            {isAuthMain ? (
+              <ProtectedRoute to="/userlist">
+                <UserList isAuthMain={isAuthMain} />
+              </ProtectedRoute>
+            ) : (
+              ''
+            )}
             <Route path="*">
               <NotFoundPage />
             </Route>

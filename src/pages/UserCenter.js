@@ -91,7 +91,7 @@ function UserCenter(props) {
   }
 
   // 送出資料函式
-  async function updataToServer() {
+  async function updateToServer() {
     setLoading(true)
 
     const request = new Request('http://localhost:5555/user/' + id, {
@@ -142,7 +142,7 @@ function UserCenter(props) {
       event.preventDefault()
       event.stopPropagation()
     } else {
-      updataToServer()
+      updateToServer()
     }
 
     setValidated(true)
