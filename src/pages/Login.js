@@ -18,7 +18,7 @@ function Login(props) {
         (loginAccount === value.username && loginPass === value.password) ||
         (loginAccount === value.mail && loginPass === value.password)
       ) {
-        let setUser = [{ name: value.name, id: value.id }]
+        let setUser = [{ name: value.name, id: value.id, sex: value.sex }]
         if (setUser !== undefined) {
           localStorage.setItem('logoUser', JSON.stringify(setUser))
         }
