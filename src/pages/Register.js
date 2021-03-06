@@ -318,7 +318,6 @@ function Register(props) {
                 title="請選擇縣市"
                 onChange={handleChange}
                 aria-describedby="inputGroupCity"
-                pattern="[^\u8ACB\u9078\u64C7]+"
               >
                 <option value="" disabled>
                   請選擇
@@ -331,6 +330,9 @@ function Register(props) {
                   )
                 })}
               </Form.Control>
+              <Form.Control.Feedback type="invalid">
+                　　　　請選擇縣市！
+              </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
 
@@ -363,6 +365,9 @@ function Register(props) {
                   )
                 })}
               </Form.Control>
+              <Form.Control.Feedback type="invalid">
+                　　　　請選擇鄉鎮！
+              </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
 
