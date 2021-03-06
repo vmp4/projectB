@@ -256,7 +256,9 @@ function UserCenter(props) {
               value={userInfo.sex}
               aria-describedby="inputGroupSex"
             >
-              <option disabled>請選擇</option>
+              <option value="" disabled>
+                請選擇
+              </option>
               <option>男</option>
               <option>女</option>
             </Form.Control>
@@ -369,9 +371,15 @@ function UserCenter(props) {
               onChange={handleChange}
               aria-describedby="inputGroupCity"
             >
-              <option disabled>請選擇</option>
+              <option value="" disabled>
+                請選擇
+              </option>
               {cityOption.map((obj, index) => {
-                return <option key={index}>{obj}</option>
+                return (
+                  <option value={obj} key={index}>
+                    {obj}
+                  </option>
+                )
               })}
             </Form.Control>
           </InputGroup>
@@ -394,9 +402,15 @@ function UserCenter(props) {
               onChange={handleChange}
               aria-describedby="inputGroupTown"
             >
-              <option disabled>請選擇</option>
+              <option value="" disabled>
+                請選擇
+              </option>
               {townOption.map((obj, index) => {
-                return <option key={index}>{obj}</option>
+                return (
+                  <option value={obj} key={index}>
+                    {obj}
+                  </option>
+                )
               })}
             </Form.Control>
           </InputGroup>

@@ -23,15 +23,35 @@ import Footer from './components/Footer'
 function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
+
+  const [userData, setUserData] = useState([])
   const [loger, setLoger] = useState('')
   const [logID, setLogID] = useState('')
   const [logName, setLogName] = useState('')
+
+  // 進入首頁讀取資料
+  async function loginMember() {
+    const requert = new Request('http://localhost:5555/user', {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+
+    const response = await fetch(requert)
+    const data = await response.json()
+
+    setUserData(data)
+  }
 
   useEffect(() => {
     if (localStorage.getItem('logoUser') !== null) {
       const newLoger = localStorage.getItem('logoUser')
       setLoger(newLoger)
     }
+
+    loginMember()
   }, [])
 
   useEffect(() => {
@@ -84,7 +104,7 @@ function App() {
               </ProtectedRoute>
             ) : (
               <Route path="/register">
-                <Register />
+                <Register userData={userData} />
               </Route>
             )}
             {!isAuth ? (
@@ -94,6 +114,7 @@ function App() {
                   login={() => {
                     setIsAuth(true)
                   }}
+                  userData={userData}
                 />
               </Route>
             ) : (

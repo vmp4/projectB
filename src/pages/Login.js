@@ -7,30 +7,13 @@ function Login(props) {
   const [loading, setLoading] = useState(true)
   const [validated, setValidated] = useState(false)
 
-  const [userData, setUserData] = useState([])
   const [loginAccount, setLoginAccount] = useState('')
   const [loginPass, setLoginPass] = useState('')
   const [rememberAccount, setRememberAccount] = useState(false)
 
-  // 讀取資料
-  async function loginMember() {
-    const requert = new Request('http://localhost:5555/user', {
-      method: 'GET',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-    })
-
-    const response = await fetch(requert)
-    const data = await response.json()
-
-    setUserData(data)
-  }
-
   // 登入確認帳號密碼
   const checkLogin = () => {
-    const getUser = userData.find((value) => {
+    const getUser = props.userData.find((value) => {
       if (
         (loginAccount === value.username && loginPass === value.password) ||
         (loginAccount === value.mail && loginPass === value.password)
@@ -101,8 +84,6 @@ function Login(props) {
   }
 
   useEffect(() => {
-    loginMember()
-
     checkSave()
 
     setTimeout(() => {
