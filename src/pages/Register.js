@@ -25,8 +25,8 @@ function Register(props) {
     birthday: '',
     mail: '',
     tel: '',
-    city: '請選擇',
-    town: '請選擇',
+    city: '',
+    town: '',
     zip: '',
     add: '',
   })
@@ -43,6 +43,16 @@ function Register(props) {
     }
     setCityOption(arrCity)
   }
+
+  // 確認帳號重複與否
+  const checkUsername = (v) => {
+    return props.userData.some((value) => {
+      return v === value.username ? true : false
+    })
+  }
+
+  // 設是否有帳號為true false
+  const forUsername = checkUsername(userInfo.username)
 
   async function upNewDataToServer() {}
 
@@ -75,7 +85,7 @@ function Register(props) {
 
   // 當城市改變時改變鄉鎮陣列
   useEffect(() => {
-    if (userInfo.city !== '請選擇') {
+    if (userInfo.city !== '') {
       let arrTown = []
       for (let i in CityTownData[userInfo.city]) {
         arrTown.push(i)
@@ -84,7 +94,7 @@ function Register(props) {
       setCityTown(CityTownData[userInfo.city])
       setUserInfo((userInfo) => ({
         ...userInfo,
-        town: '請選擇',
+        town: '',
         zip: '',
       }))
     }
@@ -92,7 +102,7 @@ function Register(props) {
 
   // 當鄉鎮改變時改變郵遞區號
   useEffect(() => {
-    if (cityTown !== undefined && userInfo.town !== '請選擇') {
+    if (cityTown !== undefined && userInfo.town !== '') {
       let arrZip = cityTown[userInfo.town]
       setUserInfo((userInfo) => ({
         ...userInfo,
@@ -100,6 +110,8 @@ function Register(props) {
       }))
     }
   }, [cityTown, userInfo.town])
+
+  console.log(userInfo.sex)
 
   return (
     <>
@@ -118,14 +130,27 @@ function Register(props) {
               <Form.Control
                 required
                 type="text"
+                value={userInfo.username}
+                title="請輸入最長64字元不含中文及特殊符號之英文數字"
                 onChange={handleChange}
                 aria-describedby="inputGroupUsername"
                 placeholder="請輸入帳號"
                 maxLength="64"
+                pattern={forUsername ? '' : '[a-zA-z0-9]+'}
               />
-              <Form.Control.Feedback type="invalid">
-                　　　　沒有輸入帳號！
-              </Form.Control.Feedback>
+              {!userInfo.username ? (
+                <Form.Control.Feedback type="invalid">
+                  　　　　沒有輸入帳號！
+                </Form.Control.Feedback>
+              ) : forUsername ? (
+                <Form.Control.Feedback type="invalid">
+                  　　　　此帳號已存在！
+                </Form.Control.Feedback>
+              ) : (
+                <Form.Control.Feedback type="invalid">
+                  　　　　請勿輸入中文及特殊符號！
+                </Form.Control.Feedback>
+              )}
             </InputGroup>
           </Form.Group>
 
@@ -141,6 +166,8 @@ function Register(props) {
               <Form.Control
                 required
                 type="text"
+                value={userInfo.name}
+                title="長度最長為32字元"
                 onChange={handleChange}
                 placeholder="請輸入姓名"
                 aria-describedby="inputGroupName"
@@ -167,13 +194,18 @@ function Register(props) {
                 as="select"
                 title="請選擇性別"
                 onChange={handleChange}
-                defaultValue="請選擇"
+                value={userInfo.sex}
                 aria-describedby="inputGroupSex"
               >
-                <option disabled>請選擇</option>
-                <option>男</option>
-                <option>女</option>
+                <option value="" disabled>
+                  請選擇
+                </option>
+                <option value="男">男</option>
+                <option value="女">女</option>
               </Form.Control>
+              <Form.Control.Feedback type="invalid">
+                　　　　請選擇性別！
+              </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
         </Form.Row>
@@ -192,13 +224,14 @@ function Register(props) {
               <Form.Control
                 required
                 type="date"
+                value={userInfo.birthday}
                 title="請輸入生日"
                 onChange={handleChange}
                 aria-describedby="inputGroupBirthday"
               />
-              {/* <Form.Control.Feedback type="invalid">
-              沒有輸入生日！
-            </Form.Control.Feedback> */}
+              <Form.Control.Feedback type="invalid">
+                　　　　沒有輸入生日！
+              </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
 
@@ -214,6 +247,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="tel"
+                value={userInfo.tel}
                 title="請輸入正確號碼以便聯絡"
                 onChange={handleChange}
                 placeholder="請輸入手機號碼"
@@ -244,6 +278,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="email"
+                value={userInfo.mail}
                 title="請輸入正確信箱以便驗證"
                 onChange={handleChange}
                 maxLength="256"
@@ -257,7 +292,7 @@ function Register(props) {
                 </Form.Control.Feedback>
               ) : (
                 <Form.Control.Feedback type="invalid">
-                  　　　　您輸入的信箱格式錯誤！
+                  　　　　輸入的信箱格式錯誤！
                 </Form.Control.Feedback>
               )}
             </InputGroup>
@@ -283,11 +318,17 @@ function Register(props) {
                 title="請選擇縣市"
                 onChange={handleChange}
                 aria-describedby="inputGroupCity"
-                pattern="[^請選擇]"
+                pattern="[^\u8ACB\u9078\u64C7]+"
               >
-                <option disabled>請選擇</option>
+                <option value="" disabled>
+                  請選擇
+                </option>
                 {cityOption.map((obj, index) => {
-                  return <option key={index}>{obj}</option>
+                  return (
+                    <option value={obj} key={index}>
+                      {obj}
+                    </option>
+                  )
                 })}
               </Form.Control>
             </InputGroup>
@@ -311,9 +352,15 @@ function Register(props) {
                 onChange={handleChange}
                 aria-describedby="inputGroupTown"
               >
-                <option disabled>請選擇</option>
+                <option value="" disabled>
+                  請選擇
+                </option>
                 {townOption.map((obj, index) => {
-                  return <option key={index}>{obj}</option>
+                  return (
+                    <option value={obj} key={index}>
+                      {obj}
+                    </option>
+                  )
                 })}
               </Form.Control>
             </InputGroup>
@@ -354,6 +401,7 @@ function Register(props) {
               <Form.Control
                 required
                 type="text"
+                value={userInfo.add}
                 title="請輸入方便收件地址"
                 onChange={handleChange}
                 placeholder="請輸入地址"
