@@ -109,6 +109,16 @@ function UserCenter(props) {
     setTimeout(() => {
       setLoading(false)
       alert('儲存完成')
+      props.setName(data.name)
+      props.setSex(data.sex)
+
+      // 將新的狀態存在localStorage以免重整後錯誤
+      const local = JSON.parse(localStorage.getItem('logoUser'))
+      const newLocal = local.map((obj) => {
+        return { name: data.name, sex: data.sex, id: obj.id }
+      })
+      localStorage.setItem('logoUser', JSON.stringify(newLocal))
+
       setUserInfo({
         name: data.name,
         username: data.username,

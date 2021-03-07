@@ -115,7 +115,7 @@ function Menu(props) {
                 : props.isAuthMain
                 ? '主管'
                 : '訪客'}
-              {props.isAuth ? '先生' : ''}
+              {props.isAuth ? (props.logSex === '男' ? '先生' : '小姐') : ''}
             </li>
           </ul>
           <Form inline className="form-inline my-2 my-lg-0">

@@ -18,22 +18,19 @@ function Login(props) {
         (loginAccount === value.username && loginPass === value.password) ||
         (loginAccount === value.mail && loginPass === value.password)
       ) {
+        // 登入成功設進localStorage 確保狀態不會因為重整而消失
         let setUser = [{ name: value.name, id: value.id, sex: value.sex }]
         if (setUser !== undefined) {
           localStorage.setItem('logoUser', JSON.stringify(setUser))
         }
-
-        setTimeout(() => {
-          alert('登入成功！')
-          props.login()
-          props.history.push('/')
-        }, 500)
 
         return true
       } else {
         return false
       }
     })
+
+    // 沒有getUser顯示輸入錯誤 有則登入並顯示登入成功
     if (!getUser) {
       setLoading(true)
 
@@ -44,6 +41,13 @@ function Login(props) {
         setLoading(false)
         setValidated(false)
       })
+    } else {
+      alert('登入成功！')
+      props.getID(getUser.id)
+      props.getName(getUser.name)
+      props.getSex(getUser.sex)
+      props.login()
+      props.history.push('/')
     }
   }
 
