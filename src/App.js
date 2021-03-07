@@ -28,6 +28,7 @@ function App() {
   const [loger, setLoger] = useState('')
   const [logID, setLogID] = useState('')
   const [logName, setLogName] = useState('')
+  const [logSex, setLogSex] = useState('')
 
   // 進入首頁讀取資料
   async function loginMember() {
@@ -45,21 +46,29 @@ function App() {
     setUserData(data)
   }
 
-  useEffect(() => {
+  // 從localStorage讀取資料 判斷是否登入過
+  const getLocalLogoUser = () => {
     if (localStorage.getItem('logoUser') !== null) {
       const newLoger = localStorage.getItem('logoUser')
       setLoger(newLoger)
     }
+  }
+
+  useEffect(() => {
+    getLocalLogoUser()
 
     loginMember()
   }, [])
 
+  // 登入成功不會因為重整頁面而取消
   useEffect(() => {
+    getLocalLogoUser()
     if (loger !== '' && loger !== null) {
       const data = JSON.parse(loger)
       setIsAuth(true)
       setLogID(data[0].id)
       setLogName(data[0].name.slice(0, 1))
+      setLogSex(data[0].sex)
     }
   }, [loger])
 
@@ -73,6 +82,7 @@ function App() {
             setIsAuth(false)
           }}
           lastName={logName}
+          logSex={logSex}
           isAuthMain={isAuthMain}
           logoutMain={() => {
             setIsAuthMain(false)
@@ -100,7 +110,16 @@ function App() {
             {isAuth ? (
               <ProtectedRoute path="/usercenter">
                 {/* 使用ProtectedRoute，一定要有傳入的props！ */}
-                <UserCenter isAuth={isAuth} id={logID} />
+                <UserCenter
+                  isAuth={isAuth}
+                  id={logID}
+                  setName={(value) => {
+                    setLogName(value.slice(0, 1))
+                  }}
+                  setSex={(value) => {
+                    setLogSex(value)
+                  }}
+                />
               </ProtectedRoute>
             ) : (
               <Route path="/register">
@@ -115,6 +134,15 @@ function App() {
                     setIsAuth(true)
                   }}
                   userData={userData}
+                  getID={(value) => {
+                    setLogID(value)
+                  }}
+                  getName={(value) => {
+                    setLogName(value.slice(0, 1))
+                  }}
+                  getSex={(value) => {
+                    setLogSex(value)
+                  }}
                 />
               </Route>
             ) : (
