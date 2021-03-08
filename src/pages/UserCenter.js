@@ -218,6 +218,7 @@ function UserCenter(props) {
               </InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
+              name="username"
               readOnly
               defaultValue={userInfo.username}
               aria-describedby="inputGroupUsername"
@@ -237,6 +238,7 @@ function UserCenter(props) {
             <Form.Control
               required
               type="text"
+              name="name"
               onChange={handleChange}
               placeholder="請輸入姓名"
               value={userInfo.name}
@@ -262,6 +264,7 @@ function UserCenter(props) {
               custom
               required
               as="select"
+              name="sex"
               onChange={handleChange}
               value={userInfo.sex}
               aria-describedby="inputGroupSex"
@@ -290,6 +293,7 @@ function UserCenter(props) {
             <Form.Control
               required
               type="date"
+              name="birthday"
               onChange={handleChange}
               placeholder="請輸入生日"
               value={userInfo.birthday}
@@ -313,6 +317,7 @@ function UserCenter(props) {
             <Form.Control
               required
               type="tel"
+              name="tel"
               onChange={handleChange}
               placeholder="請輸入手機號碼"
               value={userInfo.tel}
@@ -343,6 +348,7 @@ function UserCenter(props) {
             <Form.Control
               required
               type="email"
+              name="mail"
               onChange={handleChange}
               value={userInfo.mail}
               maxLength="256"
@@ -377,6 +383,7 @@ function UserCenter(props) {
               custom
               required
               as="select"
+              name="city"
               value={userInfo.city}
               onChange={handleChange}
               aria-describedby="inputGroupCity"
@@ -408,6 +415,7 @@ function UserCenter(props) {
               custom
               required
               as="select"
+              name="town"
               value={userInfo.town}
               onChange={handleChange}
               aria-describedby="inputGroupTown"
@@ -432,6 +440,7 @@ function UserCenter(props) {
           <Form.Control
             required
             type="text"
+            name="zip"
             value={userInfo.zip}
             onChange={handleChange}
             placeholder="請輸入"
@@ -460,6 +469,7 @@ function UserCenter(props) {
             <Form.Control
               required
               type="text"
+              name="add"
               value={userInfo.add}
               onChange={handleChange}
               placeholder="請輸入地址"
