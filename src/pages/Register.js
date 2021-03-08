@@ -137,8 +137,16 @@ function Register(props) {
             )}
           </Form.Group>
         </Form.Row>
+
+        {/* 第２行－密碼 */}
+        <Form.Row></Form.Row>
+
+        {/* 第３行－密碼 */}
+        <Form.Row></Form.Row>
+
+        {/* 第４行－姓名、性別 */}
         <Form.Row>
-          {/* 第２欄－姓名 */}
+          {/* 第１欄－姓名 */}
           <Form.Group as={Col} md="4" controlId="name">
             <Form.Label>姓名</Form.Label>
             <Form.Control
@@ -155,7 +163,7 @@ function Register(props) {
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* 第３欄－性別 */}
+          {/* 第２欄－性別 */}
           <Form.Group as={Col} md="2" controlId="sex">
             <Form.Label>性別</Form.Label>
             <Form.Control
@@ -177,18 +185,18 @@ function Register(props) {
             </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
-        <Form.Row></Form.Row>
-        <Form.Row></Form.Row>
-        <Form.Row></Form.Row>
 
-        {/* 第２行 */}
+        {/* 第５行－生日、手機 */}
         <Form.Row>
           {/* 第１欄－生日 */}
-          <Form.Group as={Col} md="4" controlId="birthday">
+          <Form.Group as={Col} md="3" controlId="birthday">
             <Form.Label>生日</Form.Label>
             <Form.Control
               required
+              min="1850-01-01"
+              max="2040-12-31"
               type="date"
+              name="birthday"
               value={userInfo.birthday}
               title="請輸入生日"
               onChange={handleChange}
@@ -199,7 +207,7 @@ function Register(props) {
           </Form.Group>
 
           {/* 第２欄－手機 */}
-          <Form.Group as={Col} md="4" controlId="tel">
+          <Form.Group as={Col} md="3" controlId="tel">
             <Form.Label>手機</Form.Label>
             <Form.Control
               required
@@ -220,9 +228,12 @@ function Register(props) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+        </Form.Row>
 
-          {/* 第３欄－信箱 */}
-          <Form.Group as={Col} md="4" controlId="mail">
+        {/* 第６行－信箱 */}
+        <Form.Row>
+          {/* 第１欄－信箱 */}
+          <Form.Group as={Col} md="6" controlId="mail">
             <Form.Label>信箱</Form.Label>
             <Form.Control
               required
@@ -246,7 +257,7 @@ function Register(props) {
           </Form.Group>
         </Form.Row>
 
-        {/* 第３行－地址 */}
+        {/* 第７行－縣市、鄉鎮、郵遞區號 */}
         <Form.Row>
           {/* 第１欄－縣市 */}
           <Form.Group as={Col} md="2" controlId="city">
@@ -324,8 +335,11 @@ function Register(props) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+        </Form.Row>
 
-          {/* 第４欄－位址 */}
+        {/* 第８行－地址 */}
+        <Form.Row>
+          {/* 第１欄－位址 */}
           <Form.Group as={Col} md="6" controlId="add">
             <Form.Label>地址</Form.Label>
             <Form.Control
@@ -347,14 +361,14 @@ function Register(props) {
           </Form.Group>
         </Form.Row>
 
-        {/* <Form.Group>
-        <Form.Check
-          required
-          label="Agree to terms and conditions"
-          feedback="You must agree before submitting."
-        />
-      </Form.Group> */}
-        <Button type="submit">確認更改</Button>
+        <Form.Group>
+          <Form.Check
+            required
+            label="我同意用戶條款"
+            feedback="您必須同意才能註冊"
+          />
+        </Form.Group>
+        <Button type="submit">確認註冊</Button>
       </Form>
     </>
   )
