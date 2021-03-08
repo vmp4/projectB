@@ -116,6 +116,7 @@ function Login(props) {
             onChange={(event) => {
               setLoginAccount(event.target.value)
             }}
+            autoFocus={rememberAccount ? false : true}
           />
           <Form.Control.Feedback type="invalid">
             請輸入帳號！
@@ -133,6 +134,7 @@ function Login(props) {
             onChange={(event) => {
               setLoginPass(event.target.value)
             }}
+            autoFocus={rememberAccount ? true : false}
           />
           <Form.Control.Feedback type="invalid">
             請輸入密碼！
