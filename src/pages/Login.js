@@ -135,6 +135,7 @@ function Login(props) {
               setLoginPass(event.target.value)
             }}
             autoFocus={rememberAccount ? true : false}
+            autoComplete="off"
           />
           <Form.Control.Feedback type="invalid">
             請輸入密碼！
