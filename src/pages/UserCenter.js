@@ -218,7 +218,7 @@ function UserCenter(props) {
               </InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
-              disabled
+              readOnly
               defaultValue={userInfo.username}
               aria-describedby="inputGroupUsername"
             />
