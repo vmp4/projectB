@@ -11,7 +11,7 @@ function Footer() {
         }}
       >
         <div className="container">
-          <p className="text-muted">版權所有(copy@right)</p>
+          <p className="text-muted">版權所有(copy@right)2021 訓</p>
         </div>
       </footer>
     </>
