@@ -4,6 +4,9 @@ import { Col, Button } from 'react-bootstrap'
 
 import CityData from '../data/CityData'
 import CityTownData from '../data/CityTownData'
+import { useHistory } from 'react-router-dom'
+
+import CheckModal from '../components/CheckModal'
 
 function Register(props) {
   const [validated, setValidated] = useState(false)
@@ -12,6 +15,7 @@ function Register(props) {
     name: '',
     username: '',
     password: '',
+    rePassword: '',
     sex: '',
     birthday: '',
     mail: '',
@@ -24,6 +28,8 @@ function Register(props) {
   const [cityOption, setCityOption] = useState([])
   const [cityTown, setCityTown] = useState({})
   const [townOption, setTownOption] = useState([])
+  const [modalShow, setModalShow] = useState(false)
+  let history = useHistory()
 
   // 一開始的地址函式
   const setAddCTArr = () => {
@@ -45,7 +51,21 @@ function Register(props) {
   // 設是否有帳號為true false
   const forUsername = checkUsername(userInfo.username)
 
-  async function upNewDataToServer() {}
+  async function upNewDataToServer() {
+    const request = new Request('http://localhost:5555/user', {
+      method: 'POST',
+      body: JSON.stringify(userInfo),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application',
+      }),
+    })
+
+    const response = await fetch(request)
+    const data = await response.json()
+
+    setModalShow(true)
+  }
 
   // 資料輸入及時改變
   const handleChange = (e) => {
@@ -102,7 +122,7 @@ function Register(props) {
     }
   }, [cityTown, userInfo.town])
 
-  // console.log(userInfo.sex)
+  // console.log(userInfo.password)
 
   return (
     <>
@@ -115,16 +135,23 @@ function Register(props) {
             <Form.Control
               required
               type="text"
+              name="username"
               value={userInfo.username}
-              title="請輸入最長64字元不含中文及特殊符號之英文數字"
+              title="請輸入最少6字元、最長64字元不含中文及特殊符號之英文數字"
               onChange={handleChange}
               placeholder="請輸入帳號"
               maxLength="64"
+              minLength="6"
               pattern={forUsername ? '' : '[a-zA-z0-9]+'}
+              autoFocus
             />
             {!userInfo.username ? (
               <Form.Control.Feedback type="invalid">
                 沒有輸入帳號！
+              </Form.Control.Feedback>
+            ) : !(userInfo.username.length >= 6) ? (
+              <Form.Control.Feedback type="invalid">
+                帳號長度要大於5！
               </Form.Control.Feedback>
             ) : forUsername ? (
               <Form.Control.Feedback type="invalid">
@@ -139,10 +166,64 @@ function Register(props) {
         </Form.Row>
 
         {/* 第２行－密碼 */}
-        <Form.Row></Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} md="6" controlId="password">
+            <Form.Label>密碼</Form.Label>
+            <Form.Control
+              required
+              type="password"
+              name="password"
+              value={userInfo.password}
+              title="請輸入最少8字元不含中文及特殊符號之英文數字"
+              onChange={handleChange}
+              placeholder="請輸入密碼"
+              pattern="[a-zA-z0-9]+"
+              minLength="8"
+              autoComplete="off"
+            />
+            {!userInfo.password ? (
+              <Form.Control.Feedback type="invalid">
+                沒有輸入密碼！
+              </Form.Control.Feedback>
+            ) : !(userInfo.password.length >= 8) ? (
+              <Form.Control.Feedback type="invalid">
+                密碼長度要大於7！
+              </Form.Control.Feedback>
+            ) : (
+              <Form.Control.Feedback type="invalid">
+                請勿輸入中文及特殊符號！
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+        </Form.Row>
 
-        {/* 第３行－密碼 */}
-        <Form.Row></Form.Row>
+        {/* 第３行－確認密碼 */}
+        <Form.Row>
+          <Form.Group as={Col} md="6" controlId="rePassword">
+            <Form.Label>確認密碼</Form.Label>
+            <Form.Control
+              required
+              type="password"
+              name="rePassword"
+              value={userInfo.rePassword}
+              title="請再次輸入密碼進行確認"
+              onChange={handleChange}
+              placeholder="請再次輸入密碼"
+              pattern={
+                userInfo.rePassword !== userInfo.password ? '' : '[a-zA-z0-9]+'
+              }
+              minLength="8"
+              autoComplete="off"
+            />
+            {userInfo.rePassword !== userInfo.password ? (
+              <Form.Control.Feedback type="invalid">
+                密碼與確認密碼不相符！
+              </Form.Control.Feedback>
+            ) : (
+              ''
+            )}
+          </Form.Group>
+        </Form.Row>
 
         {/* 第４行－姓名、性別 */}
         <Form.Row>
@@ -152,6 +233,7 @@ function Register(props) {
             <Form.Control
               required
               type="text"
+              name="name"
               value={userInfo.name}
               title="長度最長為32字元"
               onChange={handleChange}
@@ -170,6 +252,7 @@ function Register(props) {
               custom
               required
               as="select"
+              name="sex"
               title="請選擇性別"
               onChange={handleChange}
               value={userInfo.sex}
@@ -193,8 +276,8 @@ function Register(props) {
             <Form.Label>生日</Form.Label>
             <Form.Control
               required
-              min="1850-01-01"
-              max="2040-12-31"
+              min="1950-01-01"
+              max="2030-12-31"
               type="date"
               name="birthday"
               value={userInfo.birthday}
@@ -212,6 +295,7 @@ function Register(props) {
             <Form.Control
               required
               type="tel"
+              name="tel"
               value={userInfo.tel}
               title="請輸入正確號碼以便聯絡"
               onChange={handleChange}
@@ -238,6 +322,7 @@ function Register(props) {
             <Form.Control
               required
               type="email"
+              name="mail"
               value={userInfo.mail}
               title="請輸入正確信箱以便驗證"
               onChange={handleChange}
@@ -266,6 +351,7 @@ function Register(props) {
               custom
               required
               as="select"
+              name="city"
               value={userInfo.city}
               title="請選擇縣市"
               onChange={handleChange}
@@ -293,6 +379,7 @@ function Register(props) {
               custom
               required
               as="select"
+              name="town"
               value={userInfo.town}
               title="請選擇鄉鎮"
               onChange={handleChange}
@@ -319,6 +406,7 @@ function Register(props) {
             <Form.Control
               required
               type="text"
+              name="zip"
               value={userInfo.zip}
               title="請確認"
               onChange={handleChange}
@@ -345,6 +433,7 @@ function Register(props) {
             <Form.Control
               required
               type="text"
+              name="add"
               value={userInfo.add}
               title="請輸入方便收件地址"
               onChange={handleChange}
@@ -366,10 +455,16 @@ function Register(props) {
             required
             label="我同意用戶條款"
             feedback="您必須同意才能註冊"
+            title="您必須同意才能註冊"
           />
         </Form.Group>
         <Button type="submit">確認註冊</Button>
       </Form>
+      <CheckModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        history={history}
+      />
     </>
   )
 }
