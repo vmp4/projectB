@@ -15,7 +15,6 @@ function Register(props) {
     name: '',
     username: '',
     password: '',
-    rePassword: '',
     sex: '',
     birthday: '',
     mail: '',
@@ -25,10 +24,11 @@ function Register(props) {
     zip: '',
     add: '',
   })
+  const [rePassword, setRePassword] = useState('')
   const [cityOption, setCityOption] = useState([])
   const [cityTown, setCityTown] = useState({})
   const [townOption, setTownOption] = useState([])
-  const [modalShow, setModalShow] = useState(false)
+  const [modalShow, setModalShow] = useState(true)
   let history = useHistory()
 
   // 一開始的地址函式
@@ -64,7 +64,9 @@ function Register(props) {
     const response = await fetch(request)
     const data = await response.json()
 
-    setModalShow(true)
+    if (data) {
+      setModalShow(true)
+    }
   }
 
   // 資料輸入及時改變
@@ -205,17 +207,17 @@ function Register(props) {
               required
               type="password"
               name="rePassword"
-              value={userInfo.rePassword}
+              value={rePassword}
               title="請再次輸入密碼進行確認"
-              onChange={handleChange}
+              onChange={(e) => {
+                setRePassword(e.target.value)
+              }}
               placeholder="請再次輸入密碼"
-              pattern={
-                userInfo.rePassword !== userInfo.password ? '' : '[a-zA-z0-9]+'
-              }
+              pattern={rePassword !== userInfo.password ? '' : '[a-zA-z0-9]+'}
               minLength="8"
               autoComplete="off"
             />
-            {userInfo.rePassword !== userInfo.password ? (
+            {rePassword !== userInfo.password ? (
               <Form.Control.Feedback type="invalid">
                 密碼與確認密碼不相符！
               </Form.Control.Feedback>
