@@ -9,6 +9,7 @@ function CheckModal(props) {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        backdrop="static"
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">註冊成功</Modal.Title>
@@ -30,6 +31,7 @@ function CheckModal(props) {
             返回首頁
           </Button>
           <Button
+            variant="success"
             onClick={() => {
               props.onHide()
               props.history.push('/login')
