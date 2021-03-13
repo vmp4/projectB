@@ -17,7 +17,8 @@ function CheckModal(props) {
         <Modal.Body>
           <h4>感謝您的註冊</h4>
           <p>
-            您可以選擇返回首頁繼續瀏覽。<br></br>
+            您可以選擇返回首頁繼續瀏覽。
+            <br />
             或是登入進行結帳。
           </p>
         </Modal.Body>
