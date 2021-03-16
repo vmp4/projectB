@@ -51,9 +51,9 @@ function Products(props) {
   }
 
   // 計算產品數量
-  function getLocalAmount(value) {
+  const getLocalAmount = (value) => {
     // 設變數為從localStorage得到的資料 如果沒有為0 再轉換為JavaScript的數值或是物件
-    const amount = JSON.parse(localStorage.getItem('cart') || 0)
+    const amount = JSON.parse(localStorage.getItem('cart')) || 0
 
     // 設數量為0
     let count = 0
@@ -61,7 +61,7 @@ function Products(props) {
     // 如果amount等於0 回傳count
     // 否則用for迴圈 並判斷如果amount[i].id等於傳入參數 count加 1
     // 然後回傳count
-    if (amount === '0') {
+    if (amount === 0) {
       return count
     } else {
       for (let i = 0; i < amount.length; i++) {
@@ -74,7 +74,7 @@ function Products(props) {
   }
 
   // 計算下拉選單數量
-  function optionCount(value) {
+  const optionCount = (value) => {
     // 設countNum等於空陣列
     let countNum = []
 
@@ -119,19 +119,6 @@ function Products(props) {
 
   const display = (
     <>
-      <div style={{ display: 'flex' }}>
-        <h2>產品頁面</h2>
-        <h6 style={{ display: 'flex', marginLeft: 'auto', marginTop: 'auto' }}>
-          目前會員狀態：
-          {props.isAuth ? (
-            <p style={{ color: 'green' }}>已登入</p>
-          ) : (
-            <p style={{ color: 'red' }}>
-              未登入 <NavLink to="/login">去登入?</NavLink>
-            </p>
-          )}
-        </h6>
-      </div>
       <div className="card-deck">
         <Card style={{ width: '18rem' }}>
           <Card.Img variant="top" src="http://via.placeholder.com/250x150" />
@@ -246,7 +233,24 @@ function Products(props) {
     </>
   )
 
-  return <>{loading ? spinner : display}</>
+  return (
+    <>
+      <div style={{ display: 'flex' }}>
+        <h2>產品頁面</h2>
+        <h6 style={{ display: 'flex', marginLeft: 'auto', marginTop: 'auto' }}>
+          目前會員狀態：
+          {props.isAuth ? (
+            <p style={{ color: 'green' }}>已登入</p>
+          ) : (
+            <p style={{ color: 'red' }}>
+              未登入 <NavLink to="/login">去登入?</NavLink>
+            </p>
+          )}
+        </h6>
+      </div>
+      {loading ? spinner : display}
+    </>
+  )
 }
 
 export default withRouter(Products)

@@ -123,7 +123,12 @@ function App() {
               </ProtectedRoute>
             ) : (
               <Route path="/register">
-                <Register userData={userData} />
+                <Register
+                  userData={userData}
+                  addUserToData={(value) => {
+                    userData.push(value)
+                  }}
+                />
               </Route>
             )}
             {!isAuth ? (
