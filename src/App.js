@@ -8,7 +8,6 @@ import {
 import Home from './pages/Home'
 import About from './pages/About'
 import Products from './pages/Products'
-import Breadcrumb from './components/Breadcrumb'
 import NotFoundPage from './pages/NotFoundPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -18,6 +17,7 @@ import UserList from './pages/UserList'
 import UserCenter from './pages/UserCenter'
 
 import Menu from './components/Menu'
+import Breadcrumb from './components/Breadcrumb'
 import Footer from './components/Footer'
 
 function App() {
@@ -151,7 +151,7 @@ function App() {
               </Route>
             )}
             {isAuthMain ? (
-              <ProtectedRoute to="/userlist">
+              <ProtectedRoute to="/userlist/:id?">
                 <UserList isAuthMain={isAuthMain} />
               </ProtectedRoute>
             ) : (
