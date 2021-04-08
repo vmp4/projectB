@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Navbar, Form, Button, FormControl } from 'react-bootstrap'
+import Badge from 'react-bootstrap/Badge'
 
 function Menu(props) {
   return (
@@ -29,6 +30,9 @@ function Menu(props) {
                 to="/products"
                 className="nav-link"
                 activeClassName="active"
+                onClick={() => {
+                  props.setNotFilter()
+                }}
               >
                 產品
               </NavLink>
@@ -45,6 +49,7 @@ function Menu(props) {
             <li className="nav-item">
               <NavLink to="/cart" className="nav-link" activeClassName="active">
                 購物車
+                <Badge variant="danger">{props.number}</Badge>
               </NavLink>
             </li>
             {props.isAuth ? (

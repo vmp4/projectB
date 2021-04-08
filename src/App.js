@@ -24,7 +24,12 @@ function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
 
+  const [productFilter, setProductFilter] = useState(false)
+
   const [userData, setUserData] = useState([])
+
+  const [cartNum, setCartNum] = useState(0)
+
   const [loger, setLoger] = useState('')
   const [logID, setLogID] = useState('')
   const [logName, setLogName] = useState('')
@@ -54,10 +59,18 @@ function App() {
     }
   }
 
+  // 從localStorage讀取資料 判斷購物車內商品數量
+  const getCartAmount = () => {
+    const Amount = JSON.parse(localStorage.getItem('cart')) || []
+    setCartNum(Amount.length)
+  }
+
   useEffect(() => {
     getLocalLogoUser()
 
     loginMember()
+
+    getCartAmount()
   }, [])
 
   // 登入成功不會因為重整頁面而取消
@@ -76,96 +89,141 @@ function App() {
     <Router>
       <>
         <Menu
+          // 登入與否、登出移除資料
           isAuth={isAuth}
           logout={() => {
             localStorage.removeItem('logoUser')
             setIsAuth(false)
           }}
+          // 購物車數量
+          number={cartNum}
+          // 登入後顯示
           lastName={logName}
           logSex={logSex}
           isAuthMain={isAuthMain}
           logoutMain={() => {
             setIsAuthMain(false)
           }}
+          // 解除產品過濾
+          setNotFilter={() => {
+            setProductFilter(false)
+          }}
         />
-        <div
-          className="container"
-          style={{ marginTop: '55px', marginBottom: '60px' }}
-        >
-          <Breadcrumb />
 
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/products/:type?/:id?">
-              <Products isAuth={isAuth} />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/cart">
-              <Cart isAuth={isAuth} />
-            </Route>
-            {isAuth ? (
-              <ProtectedRoute path="/usercenter">
-                {/* 使用ProtectedRoute，一定要有傳入的props！ */}
-                <UserCenter
+        <div className="forBread">
+          <Breadcrumb
+            // 解除產品過濾
+            setNotFilter={() => {
+              setProductFilter(false)
+            }}
+          />
+        </div>
+
+        <div className="forSpace">
+          <div className="underBread">
+            <Switch>
+              {/* 首頁 */}
+              <Route exact path="/">
+                <Home />
+              </Route>
+
+              {/* 產品頁 */}
+              <Route path="/products/:type?/:brand?/:id?">
+                <Products
                   isAuth={isAuth}
-                  id={logID}
-                  setName={(value) => {
-                    setLogName(value.slice(0, 1))
+                  // 產品加入購物車 計算數量
+                  getCart={getCartAmount}
+                  // 產品過濾 初始為不過濾
+                  filterOrNot={productFilter}
+                  // 產品過濾
+                  setFilter={() => {
+                    setProductFilter(true)
                   }}
-                  setSex={(value) => {
-                    setLogSex(value)
-                  }}
-                />
-              </ProtectedRoute>
-            ) : (
-              <Route path="/register">
-                <Register
-                  userData={userData}
-                  addUserToData={(value) => {
-                    userData.push(value)
+                  // 取消產品過濾
+                  setNotFilter={() => {
+                    setProductFilter(false)
                   }}
                 />
               </Route>
-            )}
-            {!isAuth ? (
-              <Route path="/login">
-                <Login
-                  isAuth={isAuth}
-                  login={() => {
-                    setIsAuth(true)
-                  }}
-                  userData={userData}
-                  getID={(value) => {
-                    setLogID(value)
-                  }}
-                  getName={(value) => {
-                    setLogName(value.slice(0, 1))
-                  }}
-                  getSex={(value) => {
-                    setLogSex(value)
-                  }}
-                />
+
+              <Route path="/about">
+                <About />
               </Route>
-            ) : (
-              <Route>
-                <Redirect to="/" />
+
+              {/* 購物車 */}
+              <Route path="/cart">
+                <Cart isAuth={isAuth} />
               </Route>
-            )}
-            {isAuthMain ? (
-              <ProtectedRoute to="/userlist/:id?">
-                <UserList isAuthMain={isAuthMain} />
-              </ProtectedRoute>
-            ) : (
-              ''
-            )}
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
+
+              {/* 會員中心　＆　註冊 */}
+              {isAuth ? (
+                <ProtectedRoute path="/usercenter">
+                  <UserCenter
+                    // 使用ProtectedRoute，一定要有傳入的props！
+                    isAuth={isAuth}
+                    id={logID}
+                    // 判斷姓氏
+                    setName={(value) => {
+                      setLogName(value.slice(0, 1))
+                    }}
+                    // 判斷性別 用來分辨先生或小姐
+                    setSex={(value) => {
+                      setLogSex(value)
+                    }}
+                  />
+                </ProtectedRoute>
+              ) : (
+                <Route path="/register">
+                  <Register
+                    userData={userData}
+                    addUserToData={(value) => {
+                      userData.push(value)
+                    }}
+                  />
+                </Route>
+              )}
+
+              {/* 登入頁面　＆　登入後跳轉到首頁 */}
+              {!isAuth ? (
+                <Route path="/login">
+                  <Login
+                    isAuth={isAuth}
+                    login={() => {
+                      setIsAuth(true)
+                    }}
+                    userData={userData}
+                    getID={(value) => {
+                      setLogID(value)
+                    }}
+                    getName={(value) => {
+                      setLogName(value.slice(0, 1))
+                    }}
+                    getSex={(value) => {
+                      setLogSex(value)
+                    }}
+                  />
+                </Route>
+              ) : (
+                <Route>
+                  <Redirect to="/" />
+                </Route>
+              )}
+
+              {/* 管理員用的頁面、未完成 */}
+              {isAuthMain ? (
+                <ProtectedRoute to="/userlist/:id?">
+                  <UserList isAuthMain={isAuthMain} />
+                </ProtectedRoute>
+              ) : (
+                ''
+              )}
+
+              {/* 無此網址 */}
+              <Route path="*">
+                <NotFoundPage />
+              </Route>
+            </Switch>
+          </div>
         </div>
         <Footer />
       </>

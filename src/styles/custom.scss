@@ -1,6 +1,95 @@
 @import './variables.scss';
 @import '~bootstrap/scss/bootstrap.scss';
 
+// content
+.forSpace {
+  margin: 55px 10px 60px 10px;
+}
+
+// breadcrumb
+.forBread {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
+}
+
+// underBread
+.underBread {
+  padding-top: 60px;
+}
+
+// products
+.productTop {
+  position: fixed;
+  width: 99%;
+  z-index: 1;
+
+  // .productTopForFlex {
+  display: flex;
+  background-color: white;
+  // justify-content: space-between;
+
+  h6 {
+    display: flex;
+    margin-left: auto;
+    margin-top: auto;
+    margin-right: 20px;
+  }
+  // }
+}
+
+.productContent {
+  margin: 55px 5px 0 5px;
+
+  .productList {
+    position: fixed;
+    z-index: 1;
+    width: auto;
+  }
+
+  .productMain {
+    margin-left: auto;
+  }
+}
+
+.card {
+  width: 18rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.card-img {
+  width: auto;
+  height: 250px;
+  margin: auto;
+  // clip: rect(10px, 290px, 290px, 10px);
+}
+
 .card-title {
-  color: green;
+  color: blue;
+}
+
+.card-text {
+  height: '11vmin';
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+}
+
+// footer
+.footer {
+  text-align: center;
+  background-color: #f8f9fa;
 }
