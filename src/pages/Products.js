@@ -10,7 +10,7 @@ function Products(props) {
   const [productData, setProductData] = useState([])
   const [filterData, setFilterData] = useState([])
   const [detail, setDetail] = useState(false)
-  const [detailData, setDetailData] = useState([])
+  const [detailData, setDetailData] = useState({})
 
   let types = props.match.params.type
   let brands = props.match.params.brand
@@ -32,7 +32,7 @@ function Products(props) {
     setProductData(data)
   }
 
-  // 計算產品數量
+  // 計算加入購物車的產品數量
   const getLocalAmount = (value) => {
     // 設變數為從localStorage得到的資料 如果沒有為0 再轉換為JavaScript的數值或是物件
     const amount = JSON.parse(localStorage.getItem('cart') || 0)
@@ -62,22 +62,23 @@ function Products(props) {
 
   // 根據路徑過濾商品
   useEffect(() => {
-    let newArr = []
-
-    // 如果沒有種類和品牌取消過濾
+    // 如果沒有種類和品牌，取消過濾
     if (!types && !brands) {
       setDetail(false)
       return props.setNotFilter()
     }
 
+    // 如果抓到id 讀取商品資料，並把顯示商品細節設為true
     if (ids) {
       for (let i = 0; i < productData.length; i++) {
-        if (productData[i].id === ids) {
+        if (productData[i].id === parseInt(ids)) {
           setDetailData(productData[i])
         }
       }
-      return
+      return setDetail(true)
     }
+
+    let newArr = []
 
     // 有品牌先過濾
     if (brands) {
@@ -134,9 +135,13 @@ function Products(props) {
           ) : (
             <Col className="productMain" sm={10}>
               <ProductDisplay
+                // 是否有過濾？有的話傳給productDisplay過濾後的資料
                 products={props.filterOrNot ? filterData : productData}
+                // 將計算此商品數量的函式傳入
                 getLocalAmount={getLocalAmount}
+                // 更新購物車數量
                 getCart={props.getCart}
+                // 傳入點選後顯示單個商品細節
                 getDetail={() => {
                   setDetail(true)
                 }}

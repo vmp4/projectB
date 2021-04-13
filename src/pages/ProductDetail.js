@@ -17,7 +17,11 @@ function ProductDetail(props) {
     }, 500)
   }, [])
 
-  const display = <h1>{props.detailData.name}</h1>
+  const display = (
+    <div>
+      <h1>{props.detailData.name}</h1>
+    </div>
+  )
 
   return <>{loading ? spinner : display}</>
 }

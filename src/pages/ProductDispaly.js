@@ -7,13 +7,12 @@ function ProductDisplay(props) {
   const [loading, setLoading] = useState(true)
   const [localCartData, setLocalCartData] = useState([])
 
-  const [number, setNumber] = useState(0)
+  const [number, setNumber] = useState({})
+
+  let numArr = {}
 
   // 增加產品數量
   const setLocalStorage = (value) => {
-    // 設定spinner為true
-    setLoading(true)
-
     // 設currentCart為從localStorage得到的資料 如果沒有為空陣列 再轉換為JavaScript的數值或是物件
     const currentCart = JSON.parse(localStorage.getItem('cart')) || []
 
@@ -27,18 +26,18 @@ function ProductDisplay(props) {
     setLocalCartData(updateData)
   }
 
-  // 移除產品數量
-  function removeLocalStorage(value) {
-    // 設定spinner為true
-    setLoading(true)
-
+  // 移除購物車產品數量
+  function removeLocalStorage(num, value) {
     // 設data為從localStorage得到的資料 再轉換為JavaScript的數值或是物件
     const data = JSON.parse(localStorage.getItem('cart'))
 
-    // 如果number大於0 則用for將小於等於number次數的傳入參數移除
-    if (number > 0) {
-      for (let i = 1; i <= number; i++) {
-        data.splice(value, 1)
+    // 用for將小於等於number次數的傳入參數移除
+    for (let i = 1; i <= num; i++) {
+      for (let j = 0; j < data.length; j++) {
+        if (data[j].id === value.id) {
+          data.splice(j, 1)
+          break
+        }
       }
     }
 
@@ -68,8 +67,9 @@ function ProductDisplay(props) {
   }
 
   // 得到即時的下拉選單數量 並設置到number裡
-  function handleChange(e) {
-    setNumber(e.target.value)
+  const handleChange = (e) => {
+    const { id, value } = e.target
+    setNumber((prev) => ({ ...prev, [id]: value }))
   }
 
   // useEffect(() => {
@@ -80,6 +80,7 @@ function ProductDisplay(props) {
   // 並獲取正確的產品數量
   useEffect(() => {
     setLoading(true)
+    setNumber(numArr)
     setTimeout(() => {
       setLoading(false)
     }, 500)
@@ -97,6 +98,7 @@ function ProductDisplay(props) {
   const display = (
     <div className="row">
       {props.products.map((value) => {
+        numArr[value.id] = '0'
         return (
           <Card key={value.id} className="text-center">
             <Card.Header
@@ -119,52 +121,59 @@ function ProductDisplay(props) {
               <Card.Text>NTD {value.price}元</Card.Text>
             </Card.Body>
             <Card.Footer>
-              <Button
-                variant="success"
-                onClick={() => {
-                  setLocalStorage({
-                    id: value.id,
-                    name: value.name,
-                    amount: 1,
-                    price: value.price,
-                  })
-                  props.getCart()
-                }}
-              >
-                加入購物車 <FaCartPlus />
-              </Button>
-              <p style={{ margin: 'auto auto auto 10px' }}>
-                目前數量: {props.getLocalAmount(1)}
-              </p>
-              <Button
-                variant="danger"
-                onClick={() => {
-                  number > 0 &&
-                    removeLocalStorage({
-                      id: value.id,
-                      name: value.name,
-                      amount: 1,
-                      price: value.price,
-                    })
-                  props.getCart()
-                }}
-              >
-                取消
-              </Button>
-              <select
-                value={number}
-                onChange={(e) => {
-                  handleChange(e)
-                }}
-              >
-                {optionCount(1).map((i) => {
-                  return (
-                    <option value={i} key={i}>
-                      {i}
-                    </option>
-                  )
-                })}
-              </select>
+              {value.type === '書籍' ? (
+                <p>請進入詳細頁面並選擇欲購入集數</p>
+              ) : value.stock > 0 ? (
+                <>
+                  <Button
+                    variant="success"
+                    onClick={() => {
+                      setLocalStorage({
+                        id: value.id,
+                        name: value.name,
+                        amount: 1,
+                        price: value.price,
+                      })
+                      props.getCart()
+                    }}
+                  >
+                    加入購物車 <FaCartPlus />
+                  </Button>
+                  <p style={{ margin: 'auto 5px auto 5px' }}>
+                    目前選購數量: {props.getLocalAmount(value.id)}
+                  </p>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      parseInt(number[value.id]) > 0 &&
+                        removeLocalStorage(parseInt(number[value.id]), {
+                          id: value.id,
+                          name: value.name,
+                          amount: 1,
+                          price: value.price,
+                        })
+                      props.getCart()
+                    }}
+                  >
+                    取消
+                  </Button>
+                  <select
+                    id={value.id}
+                    value={number[value.id]}
+                    onChange={handleChange}
+                  >
+                    {optionCount(value.id).map((i) => {
+                      return (
+                        <option value={i} key={i}>
+                          {i}
+                        </option>
+                      )
+                    })}
+                  </select>
+                </>
+              ) : (
+                <p>此商品已售罄</p>
+              )}
             </Card.Footer>
           </Card>
         )
