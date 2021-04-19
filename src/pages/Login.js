@@ -104,14 +104,7 @@ function Login(props) {
   )
   const display = (
     <div className="d-flex justify-content-center">
-      <Form
-        className="bg-secondary"
-        as={Col}
-        md="6"
-        noValidate
-        validated={validated}
-        onSubmit={handleSubmit}
-      >
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1>登入</h1>
         <Form.Row>
           <Form.Group controlId="Account">
