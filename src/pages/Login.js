@@ -103,68 +103,77 @@ function Login(props) {
     </div>
   )
   const display = (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <h1>登入</h1>
-      <Form.Row>
-        <Form.Group as={Col} md="6" controlId="Account">
-          <Form.Label>帳號</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            value={loginAccount}
-            placeholder="請輸入帳號或信箱"
-            onChange={(event) => {
-              setLoginAccount(event.target.value)
+    <div className="d-flex justify-content-center">
+      <Form
+        className="bg-secondary"
+        as={Col}
+        md="6"
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+      >
+        <h1>登入</h1>
+        <Form.Row>
+          <Form.Group controlId="Account">
+            <Form.Label>帳號</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              value={loginAccount}
+              placeholder="請輸入帳號或信箱"
+              onChange={(event) => {
+                setLoginAccount(event.target.value)
+              }}
+              autoFocus={rememberAccount ? false : true}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入帳號！
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row>
+          <Form.Group controlId="password">
+            <Form.Label>密碼</Form.Label>
+            <Form.Control
+              required
+              type="password"
+              placeholder="請輸入密碼"
+              onChange={(event) => {
+                setLoginPass(event.target.value)
+              }}
+              autoFocus={rememberAccount ? true : false}
+              autoComplete="off"
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入密碼！
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Group controlId="saveAccountCheckbox">
+          <Form.Check
+            type="checkbox"
+            label="記住帳號"
+            onChange={(e) => {
+              setRememberAccount(e.target.checked)
             }}
-            autoFocus={rememberAccount ? false : true}
+            checked={rememberAccount}
           />
-          <Form.Control.Feedback type="invalid">
-            請輸入帳號！
-          </Form.Control.Feedback>
         </Form.Group>
-      </Form.Row>
 
-      <Form.Row>
-        <Form.Group as={Col} md="6" controlId="password">
-          <Form.Label>密碼</Form.Label>
-          <Form.Control
-            required
-            type="password"
-            placeholder="請輸入密碼"
-            onChange={(event) => {
-              setLoginPass(event.target.value)
-            }}
-            autoFocus={rememberAccount ? true : false}
-            autoComplete="off"
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入密碼！
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Form.Row>
-
-      <Form.Group controlId="saveAccountCheckbox">
-        <Form.Check
-          type="checkbox"
-          label="記住帳號"
-          onChange={(e) => {
-            setRememberAccount(e.target.checked)
-          }}
-          checked={rememberAccount}
-        />
-      </Form.Group>
-
-      <Form.Row>
-        <Button type="submit">登入</Button>
-        {props.isAuth ? (
-          ''
-        ) : (
-          <Form.Text as={Col} style={{ margin: '10px' }}>
-            沒有會員？去<Link to="register">註冊</Link>
-          </Form.Text>
-        )}
-      </Form.Row>
-    </Form>
+        <Form.Row>
+          <Button type="submit">登入</Button>
+          {props.isAuth ? (
+            ''
+          ) : (
+            <Form.Text as={Col} style={{ margin: '10px' }}>
+              沒有會員？去<Link to="register">註冊</Link>
+            </Form.Text>
+          )}
+        </Form.Row>
+      </Form>
+    </div>
   )
 
   return <>{loading ? spinner : display}</>

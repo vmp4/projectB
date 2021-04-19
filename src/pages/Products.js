@@ -156,6 +156,7 @@ function Products(props) {
     }
   }, [props, ids, brands, types, productData, pageActive, breakpoints])
 
+  // 若總頁數改變，將pageActive設為1
   useEffect(() => {
     if (peginationTotal) {
       setPageActive(1)
