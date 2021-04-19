@@ -25,6 +25,7 @@ function Menu(props) {
                 首頁
               </NavLink>
             </li>
+
             <li className="nav-item">
               <NavLink
                 to="/products"
@@ -37,6 +38,7 @@ function Menu(props) {
                 產品
               </NavLink>
             </li>
+
             <li className="nav-item">
               <NavLink
                 to="/about"
@@ -46,12 +48,14 @@ function Menu(props) {
                 關於我
               </NavLink>
             </li>
+
             <li className="nav-item">
               <NavLink to="/cart" className="nav-link" activeClassName="active">
                 購物車
                 <Badge variant="danger">{props.number}</Badge>
               </NavLink>
             </li>
+
             {props.isAuth ? (
               <li className="nav-item">
                 <NavLink
@@ -73,6 +77,7 @@ function Menu(props) {
                 </NavLink>
               </li>
             )}
+
             {!props.isAuth ? (
               <li className="nav-item">
                 <NavLink
@@ -97,6 +102,7 @@ function Menu(props) {
                 </NavLink>
               </li>
             )}
+
             {props.isAuthMain ? (
               <li className="nav-item">
                 <NavLink
@@ -110,6 +116,7 @@ function Menu(props) {
             ) : (
               ''
             )}
+
             <li
               className="nav-item"
               style={{ marginTop: 'auto', marginBottom: 'auto' }}

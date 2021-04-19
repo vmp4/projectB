@@ -9,9 +9,7 @@ function ProductDisplay(props) {
 
   const [number, setNumber] = useState({})
 
-  let numArr = {}
-
-  // 增加產品數量
+  // 增加購物車產品數量
   const setLocalStorage = (value) => {
     // 設currentCart為從localStorage得到的資料 如果沒有為空陣列 再轉換為JavaScript的數值或是物件
     const currentCart = JSON.parse(localStorage.getItem('cart')) || []
@@ -66,6 +64,12 @@ function ProductDisplay(props) {
     return countNum
   }
 
+  let numObj = {}
+  // 將所顯示的產品，下拉選單的值設為物件
+  function addSelectValue(value) {
+    numObj[value] = '0'
+  }
+
   // 得到即時的下拉選單數量 並設置到number裡
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -80,10 +84,10 @@ function ProductDisplay(props) {
   // 並獲取正確的產品數量
   useEffect(() => {
     setLoading(true)
-    setNumber(numArr)
+    setNumber(numObj)
     setTimeout(() => {
       setLoading(false)
-    }, 500)
+    }, 200)
     props.getLocalAmount()
   }, [props, localCartData])
 
@@ -98,7 +102,7 @@ function ProductDisplay(props) {
   const display = (
     <div className="row">
       {props.products.map((value) => {
-        numArr[value.id] = '0'
+        addSelectValue(value.id)
         return (
           <Card key={value.id} className="text-center">
             <Card.Header
@@ -116,7 +120,12 @@ function ProductDisplay(props) {
               />
             </Card.Header>
             <Card.Body>
-              <Card.Title>{value.name}</Card.Title>
+              <Card.Title
+              // as={Link}
+              // to={`/products/${value.type}/${value.brand}/${value.id}`}
+              >
+                {value.name}
+              </Card.Title>
               <Card.Text>{value.shotInfo}</Card.Text>
               <Card.Text>NTD {value.price}元</Card.Text>
             </Card.Body>

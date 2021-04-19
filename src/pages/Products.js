@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from 'react'
+import Paginate from '../components/Paginate'
 import { withRouter, Link } from 'react-router-dom'
 import ProductList from '../components/ProductList'
 import ProductDisplay from './ProductDispaly'
 import ProductDetail from './ProductDetail'
 
 import { Row, Col } from 'react-bootstrap'
+import { useBreakpoint } from '../breakpoint'
 
 function Products(props) {
   const [productData, setProductData] = useState([])
-  const [filterData, setFilterData] = useState([])
+  const [pageOfProduct, setPageOfProduct] = useState([])
+
+  // 是否顯示詳細資料
   const [detail, setDetail] = useState(false)
+  // 詳細資料
   const [detailData, setDetailData] = useState({})
+
+  // 總頁數
+  const [peginationTotal, setPeginationTotal] = useState(1)
+  // 第幾頁點亮
+  const [pageActive, setPageActive] = useState(1)
+
+  // 自定義鉤子，判斷螢幕寬度大小
+  const breakpoints = useBreakpoint()
 
   let types = props.match.params.type
   let brands = props.match.params.brand
@@ -55,6 +68,16 @@ function Products(props) {
     }
   }
 
+  // 根據選擇頁數顯示不同商品
+  function showProductByPegination(product, amount, value) {
+    // 將商品以amount件為一頁進行分頁
+    const filterProduct = product.filter((item, index) => {
+      return index < value * amount && index >= (value - 1) * amount
+    })
+
+    setPageOfProduct(filterProduct)
+  }
+
   useEffect(() => {
     getProductsData()
     getLocalAmount()
@@ -62,8 +85,27 @@ function Products(props) {
 
   // 根據路徑過濾商品
   useEffect(() => {
+    // 根據螢幕寬度大小改變一頁的產品數量
+    let amount
+    if (breakpoints.sm) {
+      amount = 4
+    } else if (breakpoints.md) {
+      amount = 6
+    } else if (breakpoints.lg) {
+      amount = 8
+    } else {
+      amount = 10
+    }
+
     // 如果沒有種類和品牌，取消過濾
     if (!types && !brands) {
+      // 顯示產品的頁數
+      const showData = Math.ceil(productData.length / amount)
+      setPeginationTotal(showData)
+
+      // 根據選擇頁數顯示不同商品
+      showProductByPegination(productData, amount, pageActive)
+
       setDetail(false)
       return props.setNotFilter()
     }
@@ -87,10 +129,23 @@ function Products(props) {
           newArr.push(productData[i])
         }
       }
+      // 顯示產品的頁數
+      const showData = Math.ceil(newArr.length / amount)
+      setPeginationTotal(showData)
+
+      // 根據選擇頁數顯示不同商品
+      showProductByPegination(newArr, amount, pageActive)
+      console.log(
+        newArr.filter((item, index) => {
+          return index >= 0
+        })
+      )
+
       setDetail(false)
-      setFilterData(newArr)
+
       return props.setFilter()
     }
+
     // 無品牌種類過濾
     if (types) {
       for (let i = 0; i < productData.length; i++) {
@@ -98,11 +153,18 @@ function Products(props) {
           newArr.push(productData[i])
         }
       }
+      // 顯示產品的頁數
+      const showData = Math.ceil(newArr.length / amount)
+      setPeginationTotal(showData)
+
+      // 根據選擇頁數顯示不同商品
+      showProductByPegination(newArr, amount, pageActive)
+
       setDetail(false)
-      setFilterData(newArr)
+
       return props.setFilter()
     }
-  }, [props, ids, brands, types, productData])
+  }, [props, ids, brands, types, productData, pageActive, breakpoints])
 
   return (
     <>
@@ -125,7 +187,7 @@ function Products(props) {
       <div className="productContent">
         <Row>
           <Col className="productList">
-            <ProductList />
+            <ProductList screen={breakpoints.sm} />
           </Col>
 
           {detail ? (
@@ -135,8 +197,8 @@ function Products(props) {
           ) : (
             <Col className="productMain" sm={10}>
               <ProductDisplay
-                // 是否有過濾？有的話傳給productDisplay過濾後的資料
-                products={props.filterOrNot ? filterData : productData}
+                // 傳給productDisplay資料
+                products={pageOfProduct}
                 // 將計算此商品數量的函式傳入
                 getLocalAmount={getLocalAmount}
                 // 更新購物車數量
@@ -144,6 +206,17 @@ function Products(props) {
                 // 傳入點選後顯示單個商品細節
                 getDetail={() => {
                   setDetail(true)
+                }}
+              />
+
+              <Paginate
+                // 將總頁數傳入子元件
+                pages={peginationTotal}
+                // 將第幾頁點亮傳入子元件，也是頁數的值
+                pageActive={pageActive}
+                // 在子元件點選頁數後，改變頁數的值
+                setPageActive={(e) => {
+                  setPageActive(e)
                 }}
               />
             </Col>

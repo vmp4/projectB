@@ -3,10 +3,21 @@ import ReactDOM from 'react-dom'
 import './index.scss'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { BreakpointProvider } from './breakpoint'
+
+const queries = {
+  sm: '(max-width: 708px)',
+  md: '(max-width: 1399px)',
+  lg: '(max-width: 1745px)',
+  // 直向(手機)為TRUE，橫向為FALSE
+  or: '(orientation: portrait)',
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BreakpointProvider queries={queries}>
+      <App />
+    </BreakpointProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
