@@ -31,9 +31,6 @@ function Menu(props) {
                 to="/products"
                 className="nav-link"
                 activeClassName="active"
-                onClick={() => {
-                  props.setNotFilter()
-                }}
               >
                 產品
               </NavLink>

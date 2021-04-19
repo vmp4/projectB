@@ -91,25 +91,11 @@ function Breadcrumb(props) {
               ''
             ) : secondShow === '' ? (
               <li className="breadcrumb-item" aria-current="page">
-                <Link
-                  to={linkTo}
-                  onClick={() => {
-                    props.setNotFilter()
-                  }}
-                >
-                  {show}
-                </Link>
+                <Link to={linkTo}>{show}</Link>
               </li>
             ) : (
               <li className="breadcrumb-item">
-                <Link
-                  to={linkTo}
-                  onClick={() => {
-                    props.setNotFilter()
-                  }}
-                >
-                  {show}
-                </Link>
+                <Link to={linkTo}>{show}</Link>
               </li>
             )}
             {secondShow === '' ? (

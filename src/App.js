@@ -24,8 +24,6 @@ function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
 
-  const [productFilter, setProductFilter] = useState(false)
-
   const [userData, setUserData] = useState([])
 
   const [cartNum, setCartNum] = useState(0)
@@ -104,19 +102,10 @@ function App() {
           logoutMain={() => {
             setIsAuthMain(false)
           }}
-          // 解除產品過濾
-          setNotFilter={() => {
-            setProductFilter(false)
-          }}
         />
 
         <div className="forBread">
-          <Breadcrumb
-            // 解除產品過濾
-            setNotFilter={() => {
-              setProductFilter(false)
-            }}
-          />
+          <Breadcrumb />
         </div>
 
         <div className="forSpace">
@@ -133,16 +122,6 @@ function App() {
                   isAuth={isAuth}
                   // 產品加入購物車 計算數量
                   getCart={getCartAmount}
-                  // 產品過濾 初始為不過濾
-                  filterOrNot={productFilter}
-                  // 產品過濾
-                  setFilter={() => {
-                    setProductFilter(true)
-                  }}
-                  // 取消產品過濾
-                  setNotFilter={() => {
-                    setProductFilter(false)
-                  }}
                 />
               </Route>
 

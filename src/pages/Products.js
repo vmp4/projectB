@@ -106,8 +106,7 @@ function Products(props) {
       // 根據選擇頁數顯示不同商品
       showProductByPegination(productData, amount, pageActive)
 
-      setDetail(false)
-      return props.setNotFilter()
+      return setDetail(false)
     }
 
     // 如果抓到id 讀取商品資料，並把顯示商品細節設為true
@@ -135,15 +134,8 @@ function Products(props) {
 
       // 根據選擇頁數顯示不同商品
       showProductByPegination(newArr, amount, pageActive)
-      console.log(
-        newArr.filter((item, index) => {
-          return index >= 0
-        })
-      )
 
-      setDetail(false)
-
-      return props.setFilter()
+      return setDetail(false)
     }
 
     // 無品牌種類過濾
@@ -160,11 +152,15 @@ function Products(props) {
       // 根據選擇頁數顯示不同商品
       showProductByPegination(newArr, amount, pageActive)
 
-      setDetail(false)
-
-      return props.setFilter()
+      return setDetail(false)
     }
   }, [props, ids, brands, types, productData, pageActive, breakpoints])
+
+  useEffect(() => {
+    if (peginationTotal) {
+      setPageActive(1)
+    }
+  }, [peginationTotal])
 
   return (
     <>
