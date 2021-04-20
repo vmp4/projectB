@@ -37,59 +37,6 @@ function UserCenter(props) {
   const [cityTown, setCityTown] = useState({})
   const [townOption, setTownOption] = useState([])
 
-  // 一開始的地址函式
-  const setAddCTArr = () => {
-    // 城市陣列 For初始下拉選單
-    let arrCity = []
-    for (let i in CityData) {
-      arrCity.push(i)
-    }
-    setCityOption(arrCity)
-    let firstCity = arrCity[0]
-    // setCity(firstCity)
-
-    // 鄉鎮陣列 For初始下拉選單
-    let arrTown = []
-    for (let i in CityTownData[firstCity]) {
-      arrTown.push(i)
-    }
-    setTownOption(arrTown)
-    // let firstTown = arrTown[0]
-    // setTown(firstTown)
-
-    // For初始郵遞區號
-    // let firstZip = CityTownData[firstCity][firstTown]
-    // setZip(firstZip)
-  }
-
-  // 讀取資料函式
-  async function getDataFromServer() {
-    const request = new Request('http://localhost:5555/user/' + id, {
-      method: 'GET',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-    })
-
-    const response = await fetch(request)
-    const data = await response.json()
-
-    setUserInfo({
-      name: data.name,
-      username: data.username,
-      password: data.password,
-      sex: data.sex,
-      birthday: data.birthday,
-      mail: data.mail,
-      tel: data.tel,
-      city: data.city,
-      town: data.town,
-      zip: data.zip,
-      add: data.add,
-    })
-  }
-
   // 送出資料函式
   async function updateToServer() {
     setLoading(true)
@@ -160,14 +107,67 @@ function UserCenter(props) {
 
   // 一開始讀取資料 當讀取資料時設置時停
   useEffect(() => {
+    // 一開始的地址函式
+    const setAddCTArr = () => {
+      // 城市陣列 For初始下拉選單
+      let arrCity = []
+      for (let i in CityData) {
+        arrCity.push(i)
+      }
+      setCityOption(arrCity)
+      let firstCity = arrCity[0]
+      // setCity(firstCity)
+
+      // 鄉鎮陣列 For初始下拉選單
+      let arrTown = []
+      for (let i in CityTownData[firstCity]) {
+        arrTown.push(i)
+      }
+      setTownOption(arrTown)
+      // let firstTown = arrTown[0]
+      // setTown(firstTown)
+
+      // For初始郵遞區號
+      // let firstZip = CityTownData[firstCity][firstTown]
+      // setZip(firstZip)
+    }
+
     setAddCTArr()
+
+    // 讀取資料函式
+    async function getDataFromServer() {
+      const request = new Request('http://localhost:5555/user/' + id, {
+        method: 'GET',
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      })
+
+      const response = await fetch(request)
+      const data = await response.json()
+
+      setUserInfo({
+        name: data.name,
+        username: data.username,
+        password: data.password,
+        sex: data.sex,
+        birthday: data.birthday,
+        mail: data.mail,
+        tel: data.tel,
+        city: data.city,
+        town: data.town,
+        zip: data.zip,
+        add: data.add,
+      })
+    }
 
     getDataFromServer()
 
     setTimeout(() => {
       setLoading(false)
     }, 500)
-  }, [])
+  }, [id])
 
   // 當城市改變時改變鄉鎮陣列
   useEffect(() => {
