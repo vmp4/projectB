@@ -45,7 +45,7 @@ function Products(props) {
     setProductData(data)
   }
 
-  // 計算加入購物車的產品數量
+  // 計算不同商品加入購物車的產品數量
   const getLocalAmount = (value) => {
     // 設變數為從localStorage得到的資料 如果沒有為0 再轉換為JavaScript的數值或是物件
     const amount = JSON.parse(localStorage.getItem('cart') || 0)

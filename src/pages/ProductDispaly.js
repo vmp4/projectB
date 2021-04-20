@@ -76,20 +76,15 @@ function ProductDisplay(props) {
     setNumber((prev) => ({ ...prev, [id]: value }))
   }
 
-  // useEffect(() => {
-  //   // props.products()
-  // }, [])
-
   // 如果localCartData更動 設置0.2秒將spinner轉為false
   // 並獲取正確的產品數量
   useEffect(() => {
     setLoading(true)
-    setNumber(numObj)
     setTimeout(() => {
       setLoading(false)
     }, 200)
     props.getLocalAmount()
-  }, [localCartData])
+  }, [props, localCartData])
 
   const spinner = (
     <div className="d-flex justify-content-center">
@@ -143,6 +138,7 @@ function ProductDisplay(props) {
                         amount: 1,
                         price: value.price,
                       })
+                      setNumber(numObj)
                       props.getCart()
                     }}
                   >
@@ -161,6 +157,7 @@ function ProductDisplay(props) {
                           amount: 1,
                           price: value.price,
                         })
+                      setNumber(numObj)
                       props.getCart()
                     }}
                   >
@@ -198,7 +195,7 @@ function ProductDisplay(props) {
 
   return (
     <>
-      {loading ? spinner : props.products.length === 0 ? displayTwo : display}
+      {loading ? spinner : props.products.length !== 0 ? display : displayTwo}
     </>
   )
 }
