@@ -4,7 +4,6 @@ import { Card, Button } from 'react-bootstrap'
 import { FaCartPlus } from 'react-icons/fa'
 
 function ProductDisplay(props) {
-  const [loading, setLoading] = useState(false)
   const [localCartData, setLocalCartData] = useState([])
 
   const [number, setNumber] = useState({})
@@ -76,13 +75,8 @@ function ProductDisplay(props) {
     setNumber((prev) => ({ ...prev, [id]: value }))
   }
 
-  // 如果localCartData更動 設置0.2秒將spinner轉為false
-  // 並獲取正確的產品數量
+  // 如果localCartData更動 獲取正確的產品數量
   useEffect(() => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 200)
     props.getLocalAmount()
   }, [props, localCartData])
 
@@ -195,7 +189,11 @@ function ProductDisplay(props) {
 
   return (
     <>
-      {loading ? spinner : props.products.length !== 0 ? display : displayTwo}
+      {props.loading
+        ? spinner
+        : props.products.length !== 0
+        ? display
+        : displayTwo}
     </>
   )
 }

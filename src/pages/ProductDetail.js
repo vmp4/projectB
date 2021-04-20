@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 function ProductDetail(props) {
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(false)
 
   const spinner = (
     <div className="d-flex justify-content-center">
@@ -11,11 +11,7 @@ function ProductDetail(props) {
     </div>
   )
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 500)
-  }, [])
+  useEffect(() => {}, [])
 
   const display = (
     <div>
@@ -23,7 +19,7 @@ function ProductDetail(props) {
     </div>
   )
 
-  return <>{loading ? spinner : display}</>
+  return <>{props.loading ? spinner : display}</>
 }
 
 export default ProductDetail

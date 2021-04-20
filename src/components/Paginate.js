@@ -3,13 +3,9 @@ import Pagination from 'react-bootstrap/Pagination'
 import { withRouter } from 'react-router'
 
 function Paginate(props) {
-  const [loading, setLoading] = useState(true)
-
   const [pages, setPages] = useState([])
 
   useEffect(() => {
-    setLoading(true)
-
     // 將pegination頁數設為陣列
     function countPages() {
       let pageArr = []
@@ -65,10 +61,6 @@ function Paginate(props) {
     }
 
     countPages()
-
-    setTimeout(() => {
-      setLoading(false)
-    }, 200)
   }, [props])
 
   const display = (
@@ -121,7 +113,7 @@ function Paginate(props) {
     </>
   )
 
-  return <>{loading ? '' : display}</>
+  return <>{props.loading ? '' : display}</>
 }
 
 export default withRouter(Paginate)

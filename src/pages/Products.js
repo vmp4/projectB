@@ -9,6 +9,8 @@ import { Row, Col } from 'react-bootstrap'
 import { useBreakpoint } from '../breakpoint'
 
 function Products(props) {
+  const [loading, setLoading] = useState(false)
+
   const [productData, setProductData] = useState([])
   const [pageOfProduct, setPageOfProduct] = useState([])
 
@@ -78,13 +80,19 @@ function Products(props) {
     setPageOfProduct(filterProduct)
   }
 
+  // 讀取產品
   useEffect(() => {
     getProductsData()
     getLocalAmount()
   }, [])
 
-  // 根據路徑過濾商品
+  // 根據路徑過濾商品、並設置0.2秒將spinner轉為false
   useEffect(() => {
+    setLoading(true)
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
     // 根據螢幕寬度大小改變一頁的產品數量
     let amount
     if (breakpoints.sm) {
@@ -189,7 +197,12 @@ function Products(props) {
 
           {detail ? (
             <Col className="productMain" sm={10}>
-              <ProductDetail detailData={detailData} />
+              <ProductDetail
+                // 將點擊的單筆資料傳入「詳細元件」
+                detailData={detailData}
+                // 將是否跑讀條，統一由這個父元件傳給子元件
+                loading={loading}
+              />
             </Col>
           ) : (
             <Col className="productMain" sm={10}>
@@ -204,6 +217,8 @@ function Products(props) {
                 getDetail={() => {
                   setDetail(true)
                 }}
+                // 將是否跑讀條，統一由這個父元件傳給子元件
+                loading={loading}
               />
 
               <Paginate
@@ -215,6 +230,8 @@ function Products(props) {
                 setPageActive={(e) => {
                   setPageActive(e)
                 }}
+                // 將是否跑讀條，統一由這個父元件傳給子元件
+                loading={loading}
               />
             </Col>
           )}
