@@ -92,7 +92,7 @@ function Login(props) {
 
     setTimeout(() => {
       setLoading(false)
-    }, 50)
+    }, 100)
   }, [])
 
   const spinner = (
@@ -169,7 +169,11 @@ function Login(props) {
     </div>
   )
 
-  return <>{loading ? spinner : display}</>
+  return (
+    <>
+      <div className="forSpinnerTop">{loading ? spinner : display}</div>
+    </>
+  )
 }
 
 export default withRouter(Login)

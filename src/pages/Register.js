@@ -496,7 +496,7 @@ function Register(props) {
 
   return (
     <>
-      {loading ? spinner : display}
+      <div className="forSpinnerTop">{loading ? spinner : display}</div>
       <CheckModal
         show={modalShow}
         onHide={() => setModalShow(false)}

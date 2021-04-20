@@ -19,7 +19,7 @@ function Cart(props) {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000)
+    setTimeout(() => setLoading(false), 500)
 
     let newCartDispaly = [] // 新增一個空陣列
     for (let i = 0; i < myCart.length; i++) {
@@ -87,25 +87,27 @@ function Cart(props) {
 
   return (
     <>
-      {!props.isAuth ? ( // 不是登入狀態顯示下面
-        <h3>
-          還沒登入<NavLink to="/login">點此去登入</NavLink>
-        </h3>
-      ) : (
-        // 是登入狀態顯示下面
-        <div>
-          {loading ? ( // 是否是讀取？是的話跑spinner
-            spinner
-          ) : sum() === 0 ? ( // 總價i是否等於0
-            <h3>
-              還沒購物？<NavLink to="/products">點此去看商品</NavLink>
-            </h3>
-          ) : (
-            // 否則跑下面這行
-            display
-          )}
-        </div>
-      )}
+      <div className="forSpinnerTop">
+        {!props.isAuth ? ( // 不是登入狀態顯示下面
+          <h3>
+            還沒登入<NavLink to="/login">點此去登入</NavLink>
+          </h3>
+        ) : (
+          // 是登入狀態顯示下面
+          <div>
+            {loading ? ( // 是否是讀取？是的話跑spinner
+              spinner
+            ) : sum() === 0 ? ( // 總價i是否等於0
+              <h3>
+                還沒購物？<NavLink to="/products">點此去看商品</NavLink>
+              </h3>
+            ) : (
+              // 否則跑下面這行
+              display
+            )}
+          </div>
+        )}
+      </div>
     </>
   )
 }

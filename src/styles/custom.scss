@@ -8,15 +8,21 @@
 
 // breadcrumb
 .forBread {
+  margin-bottom: 10px;
   position: fixed;
   width: 100%;
   z-index: 1;
   background-color: white;
 }
 
+// forSpinnerTop
+.forSpinnerTop {
+  margin: 15px 5px 0 5px;
+}
+
 // underBread
 .underBread {
-  padding-top: 70px;
+  padding-top: 60px;
 }
 
 // products

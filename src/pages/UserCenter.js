@@ -166,7 +166,7 @@ function UserCenter(props) {
 
     setTimeout(() => {
       setLoading(false)
-    }, 500)
+    }, 200)
   }, [id])
 
   // 當城市改變時改變鄉鎮陣列
@@ -497,7 +497,11 @@ function UserCenter(props) {
     </Form>
   )
 
-  return <>{loading ? spinner : display}</>
+  return (
+    <>
+      <div className="forSpinnerTop">{loading ? spinner : display}</div>
+    </>
+  )
 }
 
 export default UserCenter
