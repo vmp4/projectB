@@ -7,11 +7,9 @@ function Paginate(props) {
 
   const [pages, setPages] = useState([])
 
-  // useEffect(() => {
-  // }, [])
-
   useEffect(() => {
     setLoading(true)
+
     // 將pegination頁數設為陣列
     function countPages() {
       let pageArr = []
@@ -20,22 +18,22 @@ function Paginate(props) {
         // 當總頁數超過五頁時
         if (props.pages > 5) {
           // 如果頁數比第一頁大、並且頁數小於現在觀看的頁數-1時
-          // 這些Ellipsis全部跳過，不新增到陣列裡面
-          if (i > 1 && i < props.pageActive - 1) {
-            // 符合條件時，只新增一個Ellipsis「…」
-            // if (i > 1 && i < 3) {
-            //   pageArr.push(<Pagination.Ellipsis key="0" />)
-            // }
+          // -----中間的if-----這些Ellipsis全部跳過，不新增到陣列裡面
+          if (i > 1 && i < props.pageActive - 2) {
+            // -----中間的if-----符合條件時，只新增一個Ellipsis「…」
+            if (i > 1 && i < 3) {
+              pageArr.push(<Pagination.Ellipsis key="0" />)
+            }
             continue
           }
 
           // 如果頁數小於總頁數、並且頁數比現在觀看的頁數+1大時
-          // 這些Ellipsis全部跳過，不新增到陣列裡面
-          if (i > props.pageActive + 1 && i < props.pages) {
-            // 符合條件時，只新增一個Ellipsis「…」
-            // if (i > props.pages - 2 && i < props.pages) {
-            //   pageArr.push(<Pagination.Ellipsis key={props.pages + 1} />)
-            // }
+          // -----中間的if-----這些Ellipsis全部跳過，不新增到陣列裡面
+          if (i > props.pageActive + 2 && i < props.pages) {
+            // -----中間的if-----符合條件時，只新增一個Ellipsis「…」
+            if (i > props.pages - 2 && i < props.pages) {
+              pageArr.push(<Pagination.Ellipsis key={props.pages + 1} />)
+            }
             continue
           }
 
@@ -80,12 +78,12 @@ function Paginate(props) {
           ''
         ) : (
           <>
-            <Pagination.First onClick={props.setPageActive(1)} />
+            <Pagination.First onClick={() => props.setPageActive(1)} />
             <Pagination.Prev
-              onClick={
+              onClick={() => {
                 props.pageActive > 1 &&
-                props.setPageActive(props.pageActive - 1)
-              }
+                  props.setPageActive(props.pageActive - 1)
+              }}
             />
           </>
         )}
@@ -97,15 +95,7 @@ function Paginate(props) {
           1
         </Pagination.Item>
 
-        {props.pages > 6 && props.pageActive > 3 ? <Pagination.Ellipsis /> : ''}
-
         {pages}
-
-        {props.pages > 6 && props.pageActive < props.pages - 2 ? (
-          <Pagination.Ellipsis />
-        ) : (
-          ''
-        )}
 
         <Pagination.Item
           active={props.pages === props.pageActive}
@@ -119,12 +109,12 @@ function Paginate(props) {
         ) : (
           <>
             <Pagination.Next
-              onClick={
+              onClick={() => {
                 props.pageActive < props.pages &&
-                props.setPageActive(props.pageActive + 1)
-              }
+                  props.setPageActive(props.pageActive + 1)
+              }}
             />
-            <Pagination.Last onClick={props.setPageActive(props.pages)} />
+            <Pagination.Last onClick={() => props.setPageActive(props.pages)} />
           </>
         )}
       </Pagination>
