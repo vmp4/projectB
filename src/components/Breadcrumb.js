@@ -92,11 +92,15 @@ function Breadcrumb(props) {
               ''
             ) : secondShow === '' ? (
               <li className="breadcrumb-item" aria-current="page">
-                <Link to={linkTo}>{show}</Link>
+                <Link to={linkTo} onClick={() => props.setSearchText('')}>
+                  {show}
+                </Link>
               </li>
             ) : (
               <li className="breadcrumb-item">
-                <Link to={linkTo}>{show}</Link>
+                <Link to={linkTo} onClick={() => props.setSearchText('')}>
+                  {show}
+                </Link>
               </li>
             )}
 
@@ -104,11 +108,15 @@ function Breadcrumb(props) {
               ''
             ) : thirdShow === '' ? (
               <li className="breadcrumb-item active" aria-current="page">
-                <Link to={secondLinkTo}>{secondShow}</Link>
+                <Link to={secondLinkTo} onClick={() => props.setSearchText('')}>
+                  {secondShow}
+                </Link>
               </li>
             ) : (
               <li className="breadcrumb-item active">
-                <Link to={secondLinkTo}>{secondShow}</Link>
+                <Link to={secondLinkTo} onClick={() => props.setSearchText('')}>
+                  {secondShow}
+                </Link>
               </li>
             )}
 
@@ -116,7 +124,9 @@ function Breadcrumb(props) {
               ''
             ) : (
               <li className="breadcrumb-item active" aria-current="page">
-                <Link to={thirdLinkTo}>{thirdShow}</Link>
+                <Link to={thirdLinkTo} onClick={() => props.setSearchText('')}>
+                  {thirdShow}
+                </Link>
               </li>
             )}
           </ol>

@@ -132,7 +132,10 @@ function App() {
         />
 
         <div className="forBread">
-          <Breadcrumb />
+          <Breadcrumb
+            // 將設定搜文字傳給menu
+            setSearchText={(v) => setSearchText(v)}
+          />
         </div>
 
         <div className="forSpace">
@@ -153,6 +156,8 @@ function App() {
                   productData={productData}
                   // 將產品資料傳給products
                   searchText={searchText}
+                  // 將設定搜文字傳給menu
+                  setSearchText={(v) => setSearchText(v)}
                 />
               </Route>
 

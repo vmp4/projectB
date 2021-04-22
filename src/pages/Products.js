@@ -230,7 +230,10 @@ function Products(props) {
       <div className="productContent">
         <Row>
           <Col className="productList">
-            <ProductList screen={breakpoints.sm} />
+            <ProductList
+              screen={breakpoints.sm}
+              setSearchText={() => props.setSearchText('')}
+            />
           </Col>
 
           {detail ? (

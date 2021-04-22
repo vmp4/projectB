@@ -158,7 +158,10 @@ function Menu(props) {
             {path.split('/')[1] === 'products' ? (
               <Button
                 variant="outline-success"
-                onClick={() => props.setSearchText(searchValue)}
+                onClick={() => {
+                  props.setSearchText(searchValue)
+                  setSearchValue('')
+                }}
               >
                 <GoSearch />
               </Button>
@@ -167,7 +170,10 @@ function Menu(props) {
                 variant="outline-success"
                 as={Link}
                 to="/products"
-                onClick={() => props.setSearchText(searchValue)}
+                onClick={() => {
+                  props.setSearchText(searchValue)
+                  setSearchValue('')
+                }}
               >
                 <GoSearch />
               </Button>

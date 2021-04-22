@@ -44,6 +44,7 @@ function ProductList(props) {
                             ? `/products/服裝/${brand}`
                             : `/products/家電/${brand}`
                         }
+                        onClick={() => props.setSearchText()}
                       >
                         {brand}
                       </Dropdown.Item>
@@ -68,6 +69,7 @@ function ProductList(props) {
                       key={index}
                       eventKey={index}
                       to={`/products/${type}`}
+                      onClick={() => props.setSearchText()}
                     >
                       {type}
                     </Dropdown.Item>
@@ -101,6 +103,7 @@ function ProductList(props) {
                       ? `/products/服裝/${brand}`
                       : `/products/家電/${brand}`
                   }
+                  onClick={() => props.setSearchText()}
                 >
                   {brand}
                 </Dropdown.Item>
@@ -124,6 +127,7 @@ function ProductList(props) {
                   key={index}
                   eventKey={index}
                   to={`/products/${type}`}
+                  onClick={() => props.setSearchText()}
                 >
                   {type}
                 </Dropdown.Item>
