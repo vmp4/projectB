@@ -11,7 +11,6 @@ import { useBreakpoint } from '../breakpoint'
 function Products(props) {
   const [loading, setLoading] = useState(false)
 
-  const [productData, setProductData] = useState([])
   const [pageOfProduct, setPageOfProduct] = useState([])
 
   // 是否顯示詳細資料
@@ -30,22 +29,6 @@ function Products(props) {
   let types = props.match.params.type
   let brands = props.match.params.brand
   let ids = props.match.params.id
-
-  // 讀取商品資料
-  async function getProductsData() {
-    const request = new Request('http://localhost:5556/products', {
-      method: 'GET',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-    })
-
-    const response = await fetch(request)
-    const data = await response.json()
-
-    setProductData(data)
-  }
 
   // 計算不同商品加入購物車的產品數量
   const getLocalAmount = (value) => {
@@ -80,9 +63,14 @@ function Products(props) {
     setPageOfProduct(filterProduct)
   }
 
+  const searchForFilter = (searchText) => (x) => {
+    return (
+      x.name.toLowerCase().includes(searchText.toLowerCase()) || !searchText
+    )
+  }
+
   // 讀取產品
   useEffect(() => {
-    getProductsData()
     getLocalAmount()
   }, [])
 
@@ -105,23 +93,11 @@ function Products(props) {
       amount = 10
     }
 
-    // 如果沒有種類和品牌，取消過濾
-    if (!types && !brands) {
-      // 顯示產品的頁數
-      const showData = Math.ceil(productData.length / amount)
-      setPeginationTotal(showData)
-
-      // 根據選擇頁數顯示不同商品
-      showProductByPegination(productData, amount, pageActive)
-
-      return setDetail(false)
-    }
-
     // 如果抓到id 讀取商品資料，並把顯示商品細節設為true
     if (ids) {
-      for (let i = 0; i < productData.length; i++) {
-        if (productData[i].id === parseInt(ids)) {
-          setDetailData(productData[i])
+      for (let i = 0; i < props.productData.length; i++) {
+        if (props.productData[i].id === parseInt(ids)) {
+          setDetailData(props.productData[i])
         }
       }
       return setDetail(true)
@@ -131,10 +107,26 @@ function Products(props) {
 
     // 有品牌先過濾
     if (brands) {
-      for (let i = 0; i < productData.length; i++) {
-        if (productData[i].brand === brands) {
-          newArr.push(productData[i])
+      for (let i = 0; i < props.productData.length; i++) {
+        if (props.productData[i].brand === brands) {
+          newArr.push(props.productData[i])
         }
+      }
+      // 品牌過濾完後，若輸入搜尋文字優先過濾
+      if (props.searchText) {
+        let searchArr = newArr.filter(searchForFilter(props.searchText))
+        let secondArr = []
+        for (let i = 0; i < searchArr.length; i++) {
+          secondArr.push(searchArr[i])
+        }
+        // 顯示產品的頁數
+        const showData = Math.ceil(secondArr.length / amount)
+        setPeginationTotal(showData)
+
+        // 根據選擇頁數顯示不同商品
+        showProductByPegination(secondArr, amount, pageActive)
+
+        return setDetail(false)
       }
       // 顯示產品的頁數
       const showData = Math.ceil(newArr.length / amount)
@@ -148,10 +140,26 @@ function Products(props) {
 
     // 無品牌種類過濾
     if (types) {
-      for (let i = 0; i < productData.length; i++) {
-        if (productData[i].type === types) {
-          newArr.push(productData[i])
+      for (let i = 0; i < props.productData.length; i++) {
+        if (props.productData[i].type === types) {
+          newArr.push(props.productData[i])
         }
+      }
+      // 無品牌種類過濾完後，若輸入搜尋文字優先過濾
+      if (props.searchText) {
+        let searchArr = newArr.filter(searchForFilter(props.searchText))
+        let secondArr = []
+        for (let i = 0; i < searchArr.length; i++) {
+          secondArr.push(searchArr[i])
+        }
+        // 顯示產品的頁數
+        const showData = Math.ceil(secondArr.length / amount)
+        setPeginationTotal(showData)
+
+        // 根據選擇頁數顯示不同商品
+        showProductByPegination(secondArr, amount, pageActive)
+
+        return setDetail(false)
       }
       // 顯示產品的頁數
       const showData = Math.ceil(newArr.length / amount)
@@ -162,7 +170,37 @@ function Products(props) {
 
       return setDetail(false)
     }
-  }, [props, ids, brands, types, productData, pageActive, breakpoints])
+
+    // 有搜尋文字先過濾
+    if (props.searchText) {
+      let searchArr = props.productData.filter(
+        searchForFilter(props.searchText)
+      )
+      for (let i = 0; i < searchArr.length; i++) {
+        newArr.push(searchArr[i])
+      }
+      // 顯示產品的頁數
+      const showData = Math.ceil(newArr.length / amount)
+      setPeginationTotal(showData)
+
+      // 根據選擇頁數顯示不同商品
+      showProductByPegination(newArr, amount, pageActive)
+
+      return setDetail(false)
+    }
+
+    // 如果沒有種類和品牌，取消過濾
+    if (!types && !brands) {
+      // 顯示產品的頁數
+      const showData = Math.ceil(props.productData.length / amount)
+      setPeginationTotal(showData)
+
+      // 根據選擇頁數顯示不同商品
+      showProductByPegination(props.productData, amount, pageActive)
+
+      return setDetail(false)
+    }
+  }, [props, ids, brands, types, pageActive, breakpoints])
 
   // 若總頁數改變，將pageActive設為1
   useEffect(() => {

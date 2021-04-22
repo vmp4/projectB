@@ -181,7 +181,7 @@ function Register(props) {
             </Form.Control.Feedback>
           ) : !(userInfo.username.length >= 6) ? (
             <Form.Control.Feedback type="invalid">
-              帳號長度要大於5字元！
+              帳號長度要大於等於6字元！
             </Form.Control.Feedback>
           ) : (
             ''

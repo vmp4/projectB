@@ -87,6 +87,7 @@ function Breadcrumb(props) {
             <li className="breadcrumb-item">
               <Link to="/">首頁</Link>
             </li>
+
             {show === '' ? (
               ''
             ) : secondShow === '' ? (
@@ -98,13 +99,19 @@ function Breadcrumb(props) {
                 <Link to={linkTo}>{show}</Link>
               </li>
             )}
+
             {secondShow === '' ? (
               ''
-            ) : (
+            ) : thirdShow === '' ? (
               <li className="breadcrumb-item active" aria-current="page">
                 <Link to={secondLinkTo}>{secondShow}</Link>
               </li>
+            ) : (
+              <li className="breadcrumb-item active">
+                <Link to={secondLinkTo}>{secondShow}</Link>
+              </li>
             )}
+
             {thirdShow === '' ? (
               ''
             ) : (

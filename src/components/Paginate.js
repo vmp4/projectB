@@ -80,21 +80,29 @@ function Paginate(props) {
           </>
         )}
 
-        <Pagination.Item
-          active={1 === props.pageActive}
-          onClick={() => props.setPageActive(1)}
-        >
-          1
-        </Pagination.Item>
+        {props.pages > 0 ? (
+          <Pagination.Item
+            active={1 === props.pageActive}
+            onClick={() => props.setPageActive(1)}
+          >
+            1
+          </Pagination.Item>
+        ) : (
+          ''
+        )}
 
         {pages}
 
-        <Pagination.Item
-          active={props.pages === props.pageActive}
-          onClick={() => props.setPageActive(props.pages)}
-        >
-          {props.pages}
-        </Pagination.Item>
+        {props.pages > 1 ? (
+          <Pagination.Item
+            active={props.pages === props.pageActive}
+            onClick={() => props.setPageActive(props.pages)}
+          >
+            {props.pages}
+          </Pagination.Item>
+        ) : (
+          ''
+        )}
 
         {props.pages < 6 ? (
           ''

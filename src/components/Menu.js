@@ -1,9 +1,14 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink, Link, withRouter } from 'react-router-dom'
 import { Navbar, Form, Button, FormControl } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
+import { GoSearch } from 'react-icons/go'
 
 function Menu(props) {
+  const [searchValue, setSearchValue] = useState('')
+
+  const path = props.location.pathname
+
   return (
     <>
       <Navbar bg="light" expand="lg" className="fixed-top">
@@ -31,6 +36,7 @@ function Menu(props) {
                 to="/products"
                 className="nav-link"
                 activeClassName="active"
+                onClick={() => props.setSearchText('')}
               >
                 產品
               </NavLink>
@@ -128,8 +134,44 @@ function Menu(props) {
             </li>
           </ul>
           <Form inline className="form-inline my-2 my-lg-0">
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-success">Search</Button>
+            <FormControl
+              type="text"
+              name="searchText"
+              list="searchProduct"
+              value={searchValue}
+              placeholder="搜尋商品"
+              className="mr-sm-2"
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+
+            <datalist id="searchProduct">
+              {props.productData
+                .filter((item, index) => {
+                  // 沒有搜尋文字，只顯示index小於5的(可改成最熱門商品)
+                  return !props.searchText ? index < 5 : item
+                })
+                .map((item) => {
+                  return <option key={item.id} value={item.name} />
+                })}
+            </datalist>
+
+            {path.split('/')[1] === 'products' ? (
+              <Button
+                variant="outline-success"
+                onClick={() => props.setSearchText(searchValue)}
+              >
+                <GoSearch />
+              </Button>
+            ) : (
+              <Button
+                variant="outline-success"
+                as={Link}
+                to="/products"
+                onClick={() => props.setSearchText(searchValue)}
+              >
+                <GoSearch />
+              </Button>
+            )}
           </Form>
         </Navbar.Collapse>
       </Navbar>
@@ -137,4 +179,4 @@ function Menu(props) {
   )
 }
 
-export default Menu
+export default withRouter(Menu)

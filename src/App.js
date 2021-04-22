@@ -24,9 +24,12 @@ function App() {
   const [isAuth, setIsAuth] = useState(false)
   const [isAuthMain, setIsAuthMain] = useState(false)
 
+  const [productData, setProductData] = useState([])
   const [userData, setUserData] = useState([])
 
   const [cartNum, setCartNum] = useState(0)
+
+  const [searchText, setSearchText] = useState('')
 
   const [loger, setLoger] = useState('')
   const [logID, setLogID] = useState('')
@@ -49,6 +52,22 @@ function App() {
     setUserData(data)
   }
 
+  // 讀取商品資料
+  async function getProductsData() {
+    const request = new Request('http://localhost:5556/products', {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+
+    const response = await fetch(request)
+    const data = await response.json()
+
+    setProductData(data)
+  }
+
   // 從localStorage讀取資料 判斷是否登入過
   const getLocalLogoUser = () => {
     if (localStorage.getItem('logoUser') !== null) {
@@ -69,6 +88,8 @@ function App() {
     loginMember()
 
     getCartAmount()
+
+    getProductsData()
   }, [])
 
   // 登入成功不會因為重整頁面而取消
@@ -102,6 +123,12 @@ function App() {
           logoutMain={() => {
             setIsAuthMain(false)
           }}
+          // 將產品資料傳給menu
+          productData={productData}
+          // 將搜尋文字傳給menu
+          searchText={searchText}
+          // 將設定搜文字傳給menu
+          setSearchText={(v) => setSearchText(v)}
         />
 
         <div className="forBread">
@@ -122,6 +149,10 @@ function App() {
                   isAuth={isAuth}
                   // 產品加入購物車 計算數量
                   getCart={getCartAmount}
+                  // 將產品資料傳給products
+                  productData={productData}
+                  // 將產品資料傳給products
+                  searchText={searchText}
                 />
               </Route>
 
@@ -129,7 +160,7 @@ function App() {
                 <About />
               </Route>
 
-              {/* 購物車 */}
+              {/* 購物車、未完成 */}
               <Route path="/cart">
                 <Cart isAuth={isAuth} />
               </Route>
