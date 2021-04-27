@@ -25,6 +25,7 @@ function App() {
   const [isAuthMain, setIsAuthMain] = useState(false)
 
   const [productData, setProductData] = useState([])
+  const [forSearchProduct, setForSearchProduct] = useState([])
   const [userData, setUserData] = useState([])
 
   const [cartNum, setCartNum] = useState(0)
@@ -66,6 +67,7 @@ function App() {
     const data = await response.json()
 
     setProductData(data)
+    setForSearchProduct(data)
   }
 
   // 從localStorage讀取資料 判斷是否登入過
@@ -124,9 +126,7 @@ function App() {
             setIsAuthMain(false)
           }}
           // 將產品資料傳給menu
-          productData={productData}
-          // 將搜尋文字傳給menu
-          searchText={searchText}
+          productData={forSearchProduct}
           // 將設定搜文字傳給menu
           setSearchText={(v) => setSearchText(v)}
         />

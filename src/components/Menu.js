@@ -9,6 +9,10 @@ function Menu(props) {
 
   const path = props.location.pathname
 
+  function filterText(value) {
+    return value.name.toLowerCase().includes(searchValue.toLowerCase())
+  }
+
   return (
     <>
       <Navbar bg="light" expand="lg" className="fixed-top">
@@ -136,7 +140,7 @@ function Menu(props) {
           <Form inline className="form-inline my-2 my-lg-0">
             <FormControl
               type="text"
-              name="searchText"
+              name="search"
               list="searchProduct"
               value={searchValue}
               placeholder="搜尋商品"
@@ -148,7 +152,7 @@ function Menu(props) {
               {props.productData
                 .filter((item, index) => {
                   // 沒有搜尋文字，只顯示index小於5的(可改成最熱門商品)
-                  return !props.searchText ? index < 5 : item
+                  return !searchValue ? index < 5 : filterText(item)
                 })
                 .map((item) => {
                   return <option key={item.id} value={item.name} />

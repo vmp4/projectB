@@ -63,6 +63,7 @@ function Products(props) {
     setPageOfProduct(filterProduct)
   }
 
+  // 文字過濾函式
   const searchForFilter = (searchText) => (x) => {
     return (
       x.name.toLowerCase().includes(searchText.toLowerCase()) || !searchText
